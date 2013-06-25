@@ -35,38 +35,67 @@
 				width: 100px;
 				height: 100px;
 				cursor: pointer;
-				background-color: #eee;
 				font-size: 500%;
 				border: solid 2px black;
 				text-align: center;
+
+				background: #e2e2e2; /* Old browsers */
+				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2QxZDFkMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZWZlZmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+				background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 ); /* IE6-8 */
 			}
 
 			.coverflow .cover.current {
 				opacity: 1;
-				background: white;
 				border-bottom: none;
+
+				box-shadow:	0 0 16px rgba(0,0,0,.5);
+
+				background: #ffffff; /* Old browsers */
+				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2YzZjNmMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+				background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f3f3f3), color-stop(51%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
+			}
+			.coverflow .cover.current:after {
+				content:			' ';
+				background-color:	white;
+				display:			block;
+				position:			absolute;
+				width:				132px;
+				height:				16px;
+				left:				-16px;
+				bottom:				-16px;
 			}
 
 			/* CD covers */
-			.cdcovers .cover {
+			.photos .cover {
 				cursor: pointer;
 				/*-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, .5)));*/
 			}
 
-			#cdcovers-info {
-				position: relative;
-				top: 300px;
-				text-align: center;
-				z-index: 1000;
+			#photos-info {
+				position:		relative;
+				top:			250px;
+				text-align:		center;
+				z-index:		1000;
+				text-shadow:	0 0 8px white;
 			}
 
-			#cdcovers-artist {
+			#photos-name {
 				font-size: 200%;
 				font-weight: bold;
-			}
-
-			#cdcovers-album {
-				font-size: 150%;
 			}
 		</style>
 		
@@ -88,29 +117,34 @@
 				/* CD covers */
 
 				if ($.fn.reflect) {
-					$('.cdcovers .cover').reflect();
+					$('.photos .cover').reflect();
 				}
 
-//				$('#cdcovers').click(function() {
-					$('.cdcovers').coverflow({
-						index:			3,
-						width:			256,
-						height:			256,
-						visible:		'density',
-						selectedCss:	{	opacity: 1	},
-						outerCss:		{	opacity: .1	},
+				$('.photos').coverflow({
+					index:			3,
+					width:			320,
+					height:			240,
+					visible:		'density',
+					selectedCss:	{	opacity: 1	},
+					outerCss:		{	opacity: .1	},
 
-						select:		function(event, cover) {
-							var img = $(cover).children().andSelf().filter('img').last();
-							$('#cdcovers-artist').text(img.data('artist') || 'Unknown artist');
-							$('#cdcovers-album').text(img.data('album') || 'Unknown album');
-						}
-					});
-//				});
+					select:		function(event, cover) {
+						var img = $(cover).children().andSelf().filter('img').last();
+						$('#photos-name').text(img.data('name') || 'unknown');
+					}
+				});
 			});
 		</script>
     </head>
     <body>
+		<h1>Coverflow</h1>
+		jQuery Coverflow effect with luxurious transformations (CSS3!) support for reflections and gracefull(ish) degradation.
+
+		<h2>Examples</h2>
+
+		<h3>Alphabet selector</h3>
+		<button id="first">first</button>
+		<button id="last">last</button>
 		<div class="coverflow">
 			<div class="cover">A</div>
 			<div class="cover">B</div>
@@ -139,31 +173,25 @@
 			<div class="cover">Y</div>
 			<div class="cover">Z</div>
 		</div>
-		<button id="first">first</button>
-		<button id="last">last</button>
 
-		<button id="cdcovers">Enable!</button>
-		<div class="cdcovers">
-			<img class="cover" data-artist="Beatles" src="http://lifethroughmervaseyes.files.wordpress.com/2013/02/abbey-road-album-cover.jpeg?w=652"/>
-			<img class="cover" data-artist="Nirvana" data-album="Nevermind" src="http://www.rockband.com/assets/thumbs/breed.png"/>
-			<img class="cover" data-artist="Bruce Springsteen" src="http://0.static.wix.com/media/a98d01_85e7d416b99b8ab1984589dce8046deb.jpg_256"/>
-			<img class="cover" data-artist="Sigur Rós" src="https://si0.twimg.com/profile_images/3251255990/8a7de15b8e780c8eda9d6248f9d6231d.jpeg"/>
-			<img class="cover" data-artist="Red Hot Chili Peppers" data-album="Mother's Milk" src="http://0.static.wix.com/media/106148_fca33a6a954184ef77c8e8aefcb06fce.jpg_256"/>
-			<img class="cover" data-artist="Faith No More" src="http://www.rockband.com/assets/thumbs/midlifecrisis.png"/>
-			<img class="cover" data-artist="Queens of the Stone Age" src="http://0.static.wix.com/media/217a5d_2267539d9cad38abb2432b62bb81a2a7.jpg_256"/>
-			<img class="cover" data-artist="At the Drive-in" data-album="Relationship of Command" src="http://www.rockband.com/assets/thumbs/onearmedscissors.png"/>
-			<img class="cover" data-artist="Don McLean" src="http://www.rockband.com/assets/thumbs/americanpie.png"/>
-			<img class="cover" data-artist="Weezer" src="http://www.rockband.com/assets/thumbs/mynameisjonas.png"/>
-			<img class="cover" data-artist="Elvis Costello" src="http://www.rockband.com/assets/thumbs/radioradio.png"/>
-			<img class="cover" data-artist="Deep Purple" src="http://www.rockband.com/assets/thumbs/smokeonthewater.png"/>
-			<img class="cover" data-artist="Johnny Cash" src="http://www.rockband.com/assets/thumbs/folsomprisonblues.png"/>
-			<img class="cover" data-artist="Jimi Hendrix" src="http://www.rockband.com/assets/thumbs/thirdstonefromthesun.png"/>
-			<img class="cover" data-artist="The Who" data-album="Tommy" src="http://www.rockband.com/assets/thumbs/amazingjourney.png"/>
-			<img class="cover" data-artist="Doors" data-album="Waiting for the Sun" src="http://www.rockband.com/assets/thumbs/helloiloveyou.png"/>
+		<h3>CD Covers</h3>
+		<div class="photos">
+			<img class="cover" data-name="Arric" src="demo/attic.jpg"/>
+			<img class="cover" data-name="Aurora Borealis" src="demo/aurora.jpg"/>
+			<img class="cover" data-name="Barbecued steak" src="demo/barbecue.jpg"/>
+			<img class="cover" data-name="Black swan" src="demo/blackswan.jpg"/>
+			<img class="cover" data-name="Chess" src="demo/chess.jpg"/>
+			<img class="cover" data-name="Fire" src="demo/fire.jpg"/>
+			<img class="cover" data-name="Keyboard" src="demo/keyboard.jpg"/>
+			<img class="cover" data-name="Locomotive" src="demo/locomotive.jpg"/>
+			<img class="cover" data-name="Novo-Diveevo monastery" src="demo/diveevo.jpg"/>
+			<img class="cover" data-name="Person" src="demo/person.jpg"/>
+			<img class="cover" data-name="Rose" src="demo/rose.jpg"/>
+			<img class="cover" data-name="Seagull" src="demo/seagull.jpg"/>
+			<img class="cover" data-name="Solar power" src="demo/solarpower.jpg"/>
 		</div>
-		<div id="cdcovers-info">
-			<div id="cdcovers-artist"></div>
-			<div id="cdcovers-album"></div>
+		<div id="photos-info">
+			<div id="photos-name"></div>
 		</div>
     </body>
 </html>
