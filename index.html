@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>jQuery Coverflow</title>
+
+		<!-- jQuery/jQueryUI (hosted) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.js"></script>
+
+		<!-- Optional: Reflection -->
+		<script type="text/javascript" src="reflection.js"></script>
+
+		<!-- Mousewheel -->
+		<script src="jquery.mousewheel.min.js"></script>
+
+		<!-- interpolate, depends on jQ 1.8.0+ -->
+		<script src="jquery.interpolate.js"></script>
+
+		<!-- Coverflow -->
+		<script src="jquery.coverflow.js"></script>
+
+		<style>
+			body {
+				font-family: "Segoe UI", Verdana, Helvetica, Arial, sans-serif;
+				font-size: 11px;
+			}
+
+			.coverflow {
+				height: 100px;
+				border-bottom: solid 2px black;
+			}
+
+			.coverflow .cover {
+				width: 100px;
+				height: 100px;
+				cursor: pointer;
+				background-color: #eee;
+				font-size: 500%;
+				border: solid 2px black;
+				text-align: center;
+			}
+
+			.coverflow .cover.current {
+				opacity: 1;
+				background: white;
+				border-bottom: none;
+			}
+
+			/* CD covers */
+			.cdcovers .cover {
+				cursor: pointer;
+				/*-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, .5)));*/
+			}
+
+			#cdcovers-info {
+				position: relative;
+				top: 300px;
+				text-align: center;
+				z-index: 1000;
+			}
+
+			#cdcovers-artist {
+				font-size: 200%;
+				font-weight: bold;
+			}
+
+			#cdcovers-album {
+				font-size: 150%;
+			}
+		</style>
+		
+		<script>
+			$(function() {
+
+				// Alphabet
+
+				$('.coverflow').coverflow();
+
+				$('#first').click(function() {
+					$('.coverflow').coverflow('index', 0);
+				});
+
+				$('#last').click(function() {
+					$('.coverflow').coverflow('index', -1);
+				});
+
+				/* CD covers */
+
+				if ($.fn.reflect) {
+					$('.cdcovers .cover').reflect();
+				}
+
+//				$('#cdcovers').click(function() {
+					$('.cdcovers').coverflow({
+						index:3,
+						width:		256,
+						height:		256,
+						visible:	'density',
+						middleCss:	{
+							opacity: 1
+						},
+						outerCss:	{
+							opacity: .1
+						},
+
+						change:		function(event, cover) {
+							$('#cdcovers-artist').text($(cover).data('artist') || 'Unknown artist');
+							$('#cdcovers-album').text($(cover).data('album') || 'Unknown album');
+						}
+					});
+//				});
+			});
+		</script>
+    </head>
+    <body>
+		<div class="coverflow">
+			<div class="cover">A</div>
+			<div class="cover">B</div>
+			<div class="cover">C</div>
+			<div class="cover">D</div>
+			<div class="cover">E</div>
+			<div class="cover">F</div>
+			<div class="cover">G</div>
+			<div class="cover">H</div>
+			<div class="cover">I</div>
+			<div class="cover">J</div>
+			<div class="cover">K</div>
+			<div class="cover">L</div>
+			<div class="cover">M</div>
+			<div class="cover">N</div>
+			<div class="cover">O</div>
+			<div class="cover">P</div>
+			<div class="cover">Q</div>
+			<div class="cover">R</div>
+			<div class="cover">S</div>
+			<div class="cover">T</div>
+			<div class="cover">U</div>
+			<div class="cover">V</div>
+			<div class="cover">W</div>
+			<div class="cover">X</div>
+			<div class="cover">Y</div>
+			<div class="cover">Z</div>
+		</div>
+		<button id="first">first</button>
+		<button id="last">last</button>
+
+		<button id="cdcovers">Enable!</button>
+		<div class="cdcovers">
+			<img class="cover" data-artist="Beatles" src="http://lifethroughmervaseyes.files.wordpress.com/2013/02/abbey-road-album-cover.jpeg?w=652"/>
+			<img class="cover" data-artist="Nirvana" data-album="Nevermind" src="http://www.rockband.com/assets/thumbs/breed.png"/>
+			<img class="cover" data-artist="Bruce Springsteen" src="http://0.static.wix.com/media/a98d01_85e7d416b99b8ab1984589dce8046deb.jpg_256"/>
+			<img class="cover" data-artist="Sigur Rós" src="https://si0.twimg.com/profile_images/3251255990/8a7de15b8e780c8eda9d6248f9d6231d.jpeg"/>
+			<img class="cover" data-artist="Red Hot Chili Peppers" data-album="Mother's Milk" src="http://0.static.wix.com/media/106148_fca33a6a954184ef77c8e8aefcb06fce.jpg_256"/>
+			<img class="cover" data-artist="Faith No More" src="http://www.rockband.com/assets/thumbs/midlifecrisis.png"/>
+			<img class="cover" data-artist="Queens of the Stone Age" src="http://0.static.wix.com/media/217a5d_2267539d9cad38abb2432b62bb81a2a7.jpg_256"/>
+			<img class="cover" data-artist="At the Drive-in" data-album="Relationship of Command" src="http://www.rockband.com/assets/thumbs/onearmedscissors.png"/>
+			<img class="cover" data-artist="Don McLean" src="http://www.rockband.com/assets/thumbs/americanpie.png"/>
+			<img class="cover" data-artist="Weezer" src="http://www.rockband.com/assets/thumbs/mynameisjonas.png"/>
+			<img class="cover" data-artist="Elvis Costello" src="http://www.rockband.com/assets/thumbs/radioradio.png"/>
+			<img class="cover" data-artist="Deep Purple" src="http://www.rockband.com/assets/thumbs/smokeonthewater.png"/>
+			<img class="cover" data-artist="Johnny Cash" src="http://www.rockband.com/assets/thumbs/folsomprisonblues.png"/>
+			<img class="cover" data-artist="Jimi Hendrix" src="http://www.rockband.com/assets/thumbs/thirdstonefromthesun.png"/>
+			<img class="cover" data-artist="The Who" data-album="Tommy" src="http://www.rockband.com/assets/thumbs/amazingjourney.png"/>
+			<img class="cover" data-artist="Doors" data-album="Waiting for the Sun" src="http://www.rockband.com/assets/thumbs/helloiloveyou.png"/>
+		</div>
+		<div id="cdcovers-info">
+			<div id="cdcovers-artist"></div>
+			<div id="cdcovers-album"></div>
+		</div>
+    </body>
+</html>
