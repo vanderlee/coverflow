@@ -50,15 +50,12 @@
 			innerScale:		.75,
 			outerScale:		.25,
 			innerOffset:	100 / 3,
-			middleCss:		undefined,
+			selectedCss:		undefined,
 			innerCss:		undefined,
 			outerCss:		undefined,
 
-			change:			undefined,
-			create:			undefined,	//@todo
-			refresh:		undefined,	//@todo
-			before:			undefined,	//@todo
-			after:			undefined	//@todo
+			change:			undefined,	// Whenever index is changed
+			select:			undefined,	// Whenever index is set (also on init)
 		},
 
 		_create: function() {
@@ -66,6 +63,7 @@
 
 			// Internal event prefix
 			that.widgetEventPrefix	= 'vanderlee-coverflow';
+
 			that.hovering			= false;
 			that.pagesize			= 1;
 	
@@ -131,7 +129,6 @@
 
 			// Initialize
 			that._setIndex(that.options.index, true);
-			that._callback('change');
 			that.refresh();
 
 			return that;
@@ -154,19 +151,23 @@
 		},
 
 		_setIndex: function(index, initial) {
+			var covers = this._getCovers();
+
 			while (index < 0) {
-				index += this._getCovers().length;
+				index += covers.length;
 			}
 
-			index %= this._getCovers().length;
+			index %= covers.length;
 
-			if (index !== this.options.index) {				
+			if (index !== this.options.index) {
+				this.refresh();		// pre-correct for reflection/mods
 				this.options.index = Math.round(index);
 				this.refresh(this.options.duration);
 				this._callback('change');
+				this._callback('select');
 			} else if (initial === true) {
 				this.refresh();
-				this._callback('change');
+				this._callback('select');
 			}
 		},
 
@@ -212,7 +213,7 @@
 					angle		= isMiddle	? 0
 								: sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerAngle, that.options.outerAngle),
 					state		= {},
-					css			= isMiddle ? that.options.middleCss || {}
+					css			= isMiddle ? that.options.selectedCss || {}
 								: ( $.interpolate && that.options.outerCss && !$.isEmptyObject(that.options.outerCss) ? (	
 									isVisible ? $.interpolate(that.options.innerCss || {}, that.options.outerCss, Math.abs(sin))
 											  : that.options.outerCss
@@ -224,7 +225,7 @@
 					$(cover).show();
 				}
 
-				$(cover).stop(true).css({
+				$(cover).stop().css({
 					'z-index':	zIndex
 				}).animate($.extend(css, {
 					'left':		left,
