@@ -55,7 +55,7 @@
 			outerCss:		undefined,
 
 			change:			undefined,	// Whenever index is changed
-			select:			undefined,	// Whenever index is set (also on init)
+			select:			undefined	// Whenever index is set (also on init)
 		},
 
 		_create: function() {
@@ -66,13 +66,13 @@
 
 			that.hovering			= false;
 			that.pagesize			= 1;
-	
+
 			// Fix height
 			that.element.height(that.element.height());
-			
+
 			// Hide all covers and set position to absolute
 			that._getCovers().hide().css('position', 'absolute');
-											
+
 			// Enable click-jump
 			that.element.on('click', '> *', function() {
 				that._setIndex(that._getCovers().index(this));
@@ -88,38 +88,38 @@
 				event.preventDefault();
 				that._setIndex(Math.max(0, Math.min(that.options.index + delta, that._getCovers().length - 1)));
 			});
-									
+
 			// Keyboard
 			that.element.hover(
 				function() { that.hovering = true; }
 			,	function() { that.hovering = false; }
-			);			
-			
+			);
+
 			$(window).on('keydown', function(event) {
 				if (that.hovering) {
 					switch (event.which) {
 						case 36:	// home
 							that._setIndex(0);
 							break;
-							
+
 						case 35:	// end
 							that._setIndex(-1);
 							break;
-							
+
 						case 40:	// down
 						case 37:	// left
 							that._setIndex(Math.max(0, that.options.index - 1));
 							break;
-							
+
 						case 38:	// up
 						case 39:	// right
 							that._setIndex(that.options.index + 1);
 							break;
-							
+
 						case 34:	// page down
 							that._setIndex(Math.max(0, that.options.index - that.pagesize));
 							break;
-							
+
 						case 33:	// page up
 							that._setIndex(Math.min(that.options.index + that.pagesize, that._getCovers().length - 1));
 							break;
@@ -137,13 +137,13 @@
 		/**
 		 * Returns the currently selected cover
 		 * @returns {jQuery} jQuery object
-		 */		
+		 */
 		cover: function() {
 			return $(this._getCovers()[this.options.index]);
 		},
-				
+
 		/**
-		 * 
+		 *
 		 * @returns {unresolved}
 		 */
 		_getCovers: function() {
@@ -193,7 +193,7 @@
 							: $.isNumeric(that.options.visible)		? that.options.visible
 							: count,
 				space		= (parentWidth - coverWidth) * .5;
-		
+
 			that.pagesize	= visible;
 
 			that._getCovers().removeClass('current').each(function(index, cover) {
@@ -214,7 +214,7 @@
 								: sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerAngle, that.options.outerAngle),
 					state		= {},
 					css			= isMiddle ? that.options.selectedCss || {}
-								: ( $.interpolate && that.options.outerCss && !$.isEmptyObject(that.options.outerCss) ? (	
+								: ( $.interpolate && that.options.outerCss && !$.isEmptyObject(that.options.outerCss) ? (
 									isVisible ? $.interpolate(that.options.innerCss || {}, that.options.outerCss, Math.abs(sin))
 											  : that.options.outerCss
 									) : {}
@@ -235,7 +235,7 @@
 					'duration': duration,
 					'step': function(now, fx) {
 						state[fx.prop] = now;
-						
+
 						if (fx.prop === '_angle') {
 							transform = 'scale(' + state._scale + ',' + state._scale + ') perspective('+(parentWidth*.5)+'px) rotateY(' + state._angle + 'deg)';
 							$(this).css({
