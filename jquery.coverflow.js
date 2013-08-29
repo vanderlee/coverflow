@@ -47,10 +47,10 @@
 			duration:		'normal',
 			innerAngle:		-75,
 			outerAngle:		-30,
-			innerScale:		.75,
-			outerScale:		.25,
+			innerScale:		0.75,
+			outerScale:		0.25,
 			innerOffset:	100 / 3,
-			selectedCss:		undefined,
+			selectedCss:	undefined,
 			innerCss:		undefined,
 			outerCss:		undefined,
 
@@ -75,7 +75,7 @@
 
 			// Enable click-jump
 			that.element.on('click', '> *', function() {
-				that._setIndex(that._getCovers().index(this));
+				that._setIndex(that._getCovers().index(this), true);
 			});
 
 			// Refresh on resize
@@ -86,7 +86,7 @@
 			// Mousewheel
 			that.element.on('mousewheel', function(event, delta) {
 				event.preventDefault();
-				that._setIndex(Math.max(0, Math.min(that.options.index + delta, that._getCovers().length - 1)));
+				that._setIndex(that.options.index - delta, true);
 			});
 
 			// Keyboard
@@ -99,36 +99,36 @@
 				if (that.hovering) {
 					switch (event.which) {
 						case 36:	// home
-							that._setIndex(0);
+							that._setIndex(0, true);
 							break;
 
 						case 35:	// end
-							that._setIndex(-1);
-							break;
-
-						case 40:	// down
-						case 37:	// left
-							that._setIndex(Math.max(0, that.options.index - 1));
+							that._setIndex(that.options.index - 1, true);
 							break;
 
 						case 38:	// up
+						case 37:	// left
+							that._setIndex(that.options.index - 1, true);
+							break;
+
+						case 40:	// down
 						case 39:	// right
-							that._setIndex(that.options.index + 1);
+							that._setIndex(that.options.index + 1, true);
 							break;
 
-						case 34:	// page down
-							that._setIndex(Math.max(0, that.options.index - that.pagesize));
+						case 33:	// page up (towards home)
+							that._setIndex(that.options.index - that.pagesize, true);
 							break;
-
-						case 33:	// page up
-							that._setIndex(Math.min(that.options.index + that.pagesize, that._getCovers().length - 1));
+							
+						case 34:	// page down (towards end)
+							that._setIndex(that.options.index + that.pagesize, true);
 							break;
 					}
 				}
 			});
 
 			// Initialize
-			that._setIndex(that.options.index, true);
+			that._setIndex(that.options.index, false, true);
 			that.refresh();
 
 			return that;
@@ -150,19 +150,44 @@
 			return $('> *', this.element);
 		},
 
-		_setIndex: function(index, initial) {
+		_setIndex: function(index, animate, initial) {
 			var covers = this._getCovers();
 
-			while (index < 0) {
-				index += covers.length;
-			}
-
-			index %= covers.length;
+			index = Math.max(0, Math.min(index, covers.length - 1));
 
 			if (index !== this.options.index) {
 				this.refresh();		// pre-correct for reflection/mods
-				this.options.index = Math.round(index);
-				this.refresh(this.options.duration);
+
+				if (animate === true) {
+					this.currentIndex	= this.options.index;
+					this.options.index	= Math.round(index);
+
+					var that		= this,
+						duration	= typeof that.options.duration === "number"
+									? that.options.duration
+									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default,
+						timeout		= null,
+						step		= that.options.index > that.currentIndex ? 1 : -1,
+						steps		= Math.abs(that.options.index - that.currentIndex),
+						time		= duration / Math.max(1, steps),
+						doStep		= function() {
+										//var ;
+										if (that.options.index !== that.currentIndex) {
+											that.currentIndex += step;
+											that.refresh.call(that, time, that.currentIndex);
+											timeout = setTimeout(doStep, time);
+										}
+									};
+					if (timeout) {
+						clearTimeout(timeout);
+					}
+					if (that.currentIndex !== this.options.index) {
+						doStep();
+					}
+				} else {
+					this.currentIndex = this.options.index = Math.round(index);
+					this.refresh(this.options.duration);
+				}
 				this._callback('change');
 				this._callback('select');
 			} else if (initial === true) {
@@ -179,30 +204,32 @@
 			if (index === undefined) {
 				return this.options.index;
 			}
-			this._setIndex(index);
+			this._setIndex(index, true);
 		},
 
-		refresh: function(duration) {
+		refresh: function(duration, index) {
 			var that		= this,
+				target		= index || that.options.index,
 				count		= that._getCovers().length,
 				parentWidth	= that.element.outerWidth(),
-				parentLeft	= that.element.position()['left'],
-				coverWidth	= that.options.width? that.options.width : that._getCovers().outerWidth(),
-				duration	= duration === undefined ? 0 : duration,
+				parentLeft	= that.element.position().left,
+				coverWidth	= that.options.width || that._getCovers().outerWidth(),
 				visible		= that.options.visible === 'density'	? Math.floor(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
 							: count,
-				space		= (parentWidth - coverWidth) * .5;
+				space		= (parentWidth - coverWidth) * 0.5;
 
+			duration		= duration || 0;
+					
 			that.pagesize	= visible;
 
 			that._getCovers().removeClass('current').each(function(index, cover) {
-				var position	= index - that.options.index,
+				var position	= index - target,
 					offset		= position / visible,
 					isVisible	= Math.abs(offset) <= 1,
-					sin			= isVisible ? Math.sin(offset * Math.PI * .5)
+					sin			= isVisible ? Math.sin(offset * Math.PI * 0.5)
 								: sign(offset),
-					cos			= isVisible ? Math.cos(offset * Math.PI * .5)
+					cos			= isVisible ? Math.cos(offset * Math.PI * 0.5)
 								: 0,
 					isMiddle	= position === 0,
 					zIndex		= count - Math.abs(position),
@@ -237,7 +264,7 @@
 						state[fx.prop] = now;
 
 						if (fx.prop === '_angle') {
-							transform = 'scale(' + state._scale + ',' + state._scale + ') perspective('+(parentWidth*.5)+'px) rotateY(' + state._angle + 'deg)';
+							transform = 'scale(' + state._scale + ',' + state._scale + ') perspective('+(parentWidth * 0.5)+'px) rotateY(' + state._angle + 'deg)';
 							$(this).css({
 								'-webkit-transform':	transform,
 								'-ms-transform':		transform,
