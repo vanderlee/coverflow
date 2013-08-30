@@ -55,7 +55,8 @@
 			outerCss:		undefined,
 
 			change:			undefined,	// Whenever index is changed
-			select:			undefined	// Whenever index is set (also on init)
+			select:			undefined,	// Whenever index is set (also on init)
+			confirm:		undefined	// Whenever clicking on the current item
 		},
 
 		_create: function() {
@@ -66,6 +67,7 @@
 
 			that.hovering			= false;
 			that.pagesize			= 1;
+			that.currentIndex		= null;
 
 			// Fix height
 			that.element.height(that.element.height());
@@ -75,7 +77,12 @@
 
 			// Enable click-jump
 			that.element.on('click', '> *', function() {
-				that._setIndex(that._getCovers().index(this), true);
+				var index = that._getCovers().index(this);
+				if (index === that.currentIndex) {
+					that._callback('confirm');
+				} else {
+					that._setIndex(index, true);
+				}
 			});
 
 			// Refresh on resize
@@ -119,7 +126,7 @@
 						case 33:	// page up (towards home)
 							that._setIndex(that.options.index - that.pagesize, true);
 							break;
-							
+
 						case 34:	// page down (towards end)
 							that._setIndex(that.options.index + that.pagesize, true);
 							break;
@@ -197,7 +204,7 @@
 		},
 
 		_callback: function(callback) {
-			this._trigger(callback, null, this._getCovers().get(this.options.index));
+			this._trigger(callback, null, this._getCovers().get(this.currentIndex), this.currentIndex);
 		},
 
 		index: function(index) {
@@ -220,7 +227,7 @@
 				space		= (parentWidth - coverWidth) * 0.5;
 
 			duration		= duration || 0;
-					
+
 			that.pagesize	= visible;
 
 			that._getCovers().removeClass('current').each(function(index, cover) {
