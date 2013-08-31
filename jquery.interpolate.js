@@ -6,8 +6,8 @@
  *
  * Copyright (c) 2013 Martijn W. van der Lee
  * Licensed under the MIT.
- *
- * CSS style interpolation.
+ */
+/* CSS style interpolation.
  * Requires jQuery 1.8+.
  * Optionally jQueryUI for color support
  */

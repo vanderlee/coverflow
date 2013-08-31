@@ -1,13 +1,13 @@
 /*jslint devel: true, bitwise: true, regexp: true, browser: true, confusion: true, unparam: true, eqeq: true, white: true, nomen: true, plusplus: true, maxerr: 50, indent: 4 */
 /*globals jQuery */
 
-/*
+/*!
  * Coverflow
  *
  * Copyright (c) 2013 Martijn W. van der Lee
  * Licensed under the MIT.
- *
- * Lightweight and flexible coverflow effect using CSS3 transforms.
+ */
+/* Lightweight and flexible coverflow effect using CSS3 transforms.
  * For modern browsers with some amount of graceful degradation.
  * Optional support for jQuery.interpolate() plugin.
  * Optional support for .reflect() plugins.
