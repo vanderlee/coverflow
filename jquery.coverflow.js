@@ -289,7 +289,7 @@
 				}), {
 					'easing':	that.options.easing,
 					'duration': duration,
-					'step': function(now, fx) {
+					'step':		function(now, fx) {
 						// Store state
 						state[fx.prop] = now;
 
@@ -306,7 +306,7 @@
 							that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, state._sin, state._cos]);
 						}
 					},
-					'complete': function() {
+					'complete':		function() {
 						$(this)[isMiddle ? 'addClass' : 'removeClass']('current');
 						$(this)[isVisible ? 'show' : 'hide']();
 
