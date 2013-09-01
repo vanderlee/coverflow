@@ -15,17 +15,16 @@
  * Requires jQuery 1.7+.
  * Recommended jQuery 1.8+ and jQueryUI.
  *
- * @todo Only update 1 outside visible range
- * @todo Support touch-drag for mobile devices
  * @todo Scroll-mode cyclic
  * @todo Display-mode continuous/cyclic
  * @todo Support direct jQueryUI slider hookup?
  * @todo Support mouse-drag to scroll?
  * @todo Support transformie?
- * @todo Support reflection.js properly (or do it in this code self)
  * @todo Take element layout into account
  * @todo Automatic height? Set scaling
  * @todo Flat view if sufficient space
+ * @todo Non-linear swipe
+ * @todo Callbacks for selected/inner/outer?
  */
 
 ;(function($, undefined) {
@@ -43,7 +42,7 @@
 			easing:			undefined,
 			index:			0,
 			width:			undefined,
-			visible:		'density',		// 'density', 'all', exact
+			visible:		'density',		// 'density', 'all', NNN (exact), NNN% (density%)
 			density:		1,
 			duration:		'normal',
 			innerAngle:		-75,
@@ -55,9 +54,12 @@
 			innerCss:		undefined,
 			outerCss:		undefined,
 
-			change:			undefined,	// Whenever index is changed
-			select:			undefined,	// Whenever index is set (also on init)
-			confirm:		undefined	// Whenever clicking on the current item
+			animateStep:			undefined,
+			animateComplete:		undefined,
+
+			change:			undefined,		// Whenever index is changed
+			select:			undefined,		// Whenever index is set (also on init)
+			confirm:		undefined		// Whenever clicking on the current item
 		},
 
 		_create: function() {
@@ -101,7 +103,7 @@
 			if ($.isFunction(that.element.swipe)) {
 				that.element.swipe({
 					swipe: function(event, direction, distance, duration, fingerCount) {
-						var count = Math.round((direction === 'left' ? 1 : -1) * 1.5 * that.pagesize * distance / that.element.width());
+						var count = Math.round((direction === 'left' ? 1 : -1) * 1.25 * that.pagesize * distance / that.element.width());
 						that._setIndex(that.options.index + count, true);
 					}
 				});
@@ -238,6 +240,7 @@
 				coverWidth	= that.options.width || that._getCovers().first().outerWidth(),
 				visible		= that.options.visible === 'density'	? Math.floor(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
+							: /%$/.test(that.options.visible)		? Math.floor(parentWidth * that.options.density / coverWidth) * parseFloat(that.options.visible) / 100
 							: count,
 				parentLeft	= that.element.position().left - ((1 - that.options.outerScale) * coverWidth * 0.5),
 				space		= (parentWidth - (that.options.outerScale * coverWidth)) * 0.5;
@@ -279,14 +282,18 @@
 					'z-index':	zIndex
 				}).animate($.extend(css, {
 					'left':		left,
+					'_sin':		sin,
+					'_cos':		cos,
 					'_scale':	scale,
-					'_angle':	angle
+					'_angle':	angle	// must be last!
 				}), {
 					'easing':	that.options.easing,
 					'duration': duration,
 					'step': function(now, fx) {
+						// Store state
 						state[fx.prop] = now;
 
+						// On last of the states, change all at once
 						if (fx.prop === '_angle') {
 							transform = 'scale(' + state._scale + ',' + state._scale + ') perspective('+(parentWidth * 0.5)+'px) rotateY(' + state._angle + 'deg)';
 							$(this).css({
@@ -294,11 +301,17 @@
 								'-ms-transform':		transform,
 								'transform':			transform
 							});
+
+							// Optional callback
+							that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, state._sin, state._cos]);
 						}
 					},
 					'complete': function() {
 						$(this)[isMiddle ? 'addClass' : 'removeClass']('current');
 						$(this)[isVisible ? 'show' : 'hide']();
+
+						// Optional callback
+						that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
 					}
 				});
 			});
