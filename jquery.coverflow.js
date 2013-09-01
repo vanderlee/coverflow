@@ -24,7 +24,7 @@
  * @todo Automatic height? Set scaling
  * @todo Flat view if sufficient space
  * @todo Non-linear swipe
- * @todo Callbacks for selected/inner/outer?
+ * @todo Replace _trigger with jqui 1.8- compatible
  */
 
 ;(function($, undefined) {
@@ -54,8 +54,8 @@
 			innerCss:		undefined,
 			outerCss:		undefined,
 
-			animateStep:			undefined,
-			animateComplete:		undefined,
+			animateStep:	undefined,
+			animateComplete:undefined,
 
 			change:			undefined,		// Whenever index is changed
 			select:			undefined,		// Whenever index is set (also on init)

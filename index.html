@@ -6,8 +6,8 @@
 
 		<!-- jQuery/jQueryUI (hosted) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.js"></script>
-		<!--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/sunny/jquery-ui.css" rel="stylesheet" type="text/css"/>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.js"></script>
+		<!--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/sunny/jquery-ui.css" rel="stylesheet" type="text/css"/>-->
 
 		<!-- Markdown parser -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
@@ -238,7 +238,10 @@
 						animateStep:	function(event, cover, offset, isVisible, isMiddle, sin, cos) {
 							if (isVisible) {
 								if (isMiddle) {
-									$(cover).css('-webkit-filter', 'none');
+									$(cover).css({
+										'filter':			'none',
+										'-webkit-filter':	'none'
+									});
 								} else {
 									var brightness	= 1 + Math.abs(sin),
 										contrast	= 1 - Math.abs(sin),
