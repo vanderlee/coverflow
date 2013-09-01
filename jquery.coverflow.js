@@ -40,6 +40,7 @@
 
 	$.widget("vanderlee.coverflow", {
 		options: {
+			easing:			undefined,
 			index:			0,
 			width:			undefined,
 			visible:		'density',		// 'density', 'all', exact
@@ -70,7 +71,7 @@
 			that.currentIndex		= null;
 
 			// Fix height
-			that.element.height(that.element.height());
+			that.element.height(that._getCovers().first().height());
 
 			// Hide all covers and set position to absolute
 			that._getCovers().hide().css('position', 'absolute');
@@ -96,6 +97,16 @@
 				that._setIndex(that.options.index - delta, true);
 			});
 
+			// Swipe
+			if ($.isFunction(that.element.swipe)) {
+				that.element.swipe({
+					swipe: function(event, direction, distance, duration, fingerCount) {
+						var count = Math.round((direction === 'left' ? 1 : -1) * 1.5 * that.pagesize * distance / that.element.width());
+						that._setIndex(that.options.index + count, true);
+					}
+				});
+			}
+
 			// Keyboard
 			that.element.hover(
 				function() { that.hovering = true; }
@@ -103,31 +114,37 @@
 			);
 
 			$(window).on('keydown', function(event) {
-				if (that.hovering) {
+				if (that.hovering) {					
 					switch (event.which) {
 						case 36:	// home
+							event.preventDefault();
 							that._setIndex(0, true);
 							break;
 
 						case 35:	// end
-							that._setIndex(that.options.index - 1, true);
+							event.preventDefault();
+							that._setIndex(that._getCovers().length - 1, true);
 							break;
 
 						case 38:	// up
 						case 37:	// left
+							event.preventDefault();
 							that._setIndex(that.options.index - 1, true);
 							break;
 
 						case 40:	// down
 						case 39:	// right
+							event.preventDefault();
 							that._setIndex(that.options.index + 1, true);
 							break;
 
 						case 33:	// page up (towards home)
+							event.preventDefault();
 							that._setIndex(that.options.index - that.pagesize, true);
 							break;
 
 						case 34:	// page down (towards end)
+							event.preventDefault();
 							that._setIndex(that.options.index + that.pagesize, true);
 							break;
 					}
@@ -175,10 +192,9 @@
 									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default,
 						timeout		= null,
 						step		= that.options.index > that.currentIndex ? 1 : -1,
-						steps		= Math.abs(that.options.index - that.currentIndex),
-						time		= duration / Math.max(1, steps),
 						doStep		= function() {
-										//var ;
+										var steps	= Math.abs(that.options.index - that.currentIndex),
+											time	= duration / Math.max(1, steps) * .5;
 										if (that.options.index !== that.currentIndex) {
 											that.currentIndex += step;
 											that.refresh.call(that, time, that.currentIndex);
@@ -218,13 +234,13 @@
 			var that		= this,
 				target		= index || that.options.index,
 				count		= that._getCovers().length,
-				parentWidth	= that.element.outerWidth(),
-				parentLeft	= that.element.position().left,
-				coverWidth	= that.options.width || that._getCovers().outerWidth(),
+				parentWidth	= that.element.width(),
+				coverWidth	= that.options.width || that._getCovers().first().outerWidth(),
 				visible		= that.options.visible === 'density'	? Math.floor(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
 							: count,
-				space		= (parentWidth - coverWidth) * 0.5;
+				parentLeft	= that.element.position().left - ((1 - that.options.outerScale) * coverWidth * 0.5),
+				space		= (parentWidth - (that.options.outerScale * coverWidth)) * 0.5;
 
 			duration		= duration || 0;
 
@@ -266,6 +282,7 @@
 					'_scale':	scale,
 					'_angle':	angle
 				}), {
+					'easing':	that.options.easing,
 					'duration': duration,
 					'step': function(now, fx) {
 						state[fx.prop] = now;
@@ -279,7 +296,7 @@
 							});
 						}
 					},
-					complete: function() {
+					'complete': function() {
 						$(this)[isMiddle ? 'addClass' : 'removeClass']('current');
 						$(this)[isVisible ? 'show' : 'hide']();
 					}
