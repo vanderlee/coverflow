@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>jQuery Coverflow</title>
+
+		<!-- jQuery/jQueryUI (hosted) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.js"></script>
+
+		<!-- Optional: Reflection -->
+		<script type="text/javascript" src="reflection.js"></script>
+
+		<!-- Mousewheel -->
+		<script src="jquery.mousewheel.min.js"></script>
+
+		<!-- interpolate, depends on jQ 1.8.0+ -->
+		<script src="jquery.interpolate.js"></script>
+
+		<!-- Coverflow -->
+		<script src="jquery.coverflow.js"></script>
+
+		<style>
+			body {
+				font-family: "Segoe UI", Verdana, Helvetica, Arial, sans-serif;
+				font-size: 11px;
+			}
+
+			.coverflow {
+				height: 100px;
+				border-bottom: solid 2px black;
+			}
+
+			.coverflow .cover {
+				width: 100px;
+				height: 100px;
+				cursor: pointer;
+				font-size: 500%;
+				border: solid 2px black;
+				text-align: center;
+
+				background: #e2e2e2; /* Old browsers */
+				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2QxZDFkMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZWZlZmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+				background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 ); /* IE6-8 */
+			}
+
+			.coverflow .cover.current {
+				opacity: 1;
+				border-bottom: none;
+
+				box-shadow:	0 0 16px rgba(0,0,0,.5);
+
+				background: #ffffff; /* Old browsers */
+				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2YzZjNmMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+				background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f3f3f3), color-stop(51%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* IE10+ */
+				background: linear-gradient(to bottom,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
+			}
+			.coverflow .cover.current:after {
+				content:			' ';
+				background-color:	white;
+				display:			block;
+				position:			absolute;
+				width:				132px;
+				height:				16px;
+				left:				-16px;
+				bottom:				-16px;
+			}
+
+			/* CD covers */
+			.photos .cover {
+				cursor: pointer;
+				/*-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, .5)));*/
+			}
+
+			#photos-info {
+				position:		relative;
+				top:			250px;
+				text-align:		center;
+				z-index:		1000;
+				text-shadow:	0 0 8px white;
+			}
+
+			#photos-name {
+				font-size: 200%;
+				font-weight: bold;
+			}
+		</style>
+		
+		<script>
+			$(function() {
+
+				// Alphabet
+
+				$('.coverflow').coverflow();
+
+				$('#first').click(function() {
+					$('.coverflow').coverflow('index', 0);
+				});
+
+				$('#last').click(function() {
+					$('.coverflow').coverflow('index', -1);
+				});
+
+				/* CD covers */
+
+				if ($.fn.reflect) {
+					$('.photos .cover').reflect();
+				}
+
+				$('.photos').coverflow({
+					index:			3,
+					width:			320,
+					height:			240,
+					visible:		'density',
+					selectedCss:	{	opacity: 1	},
+					outerCss:		{	opacity: .1	},
+
+					select:		function(event, cover) {
+						var img = $(cover).children().andSelf().filter('img').last();
+						$('#photos-name').text(img.data('name') || 'unknown');
+					}
+				});
+			});
+		</script>
+    </head>
+    <body>
+		<h1>Coverflow</h1>
+		jQuery Coverflow effect with luxurious transformations (CSS3!) support for reflections and gracefull(ish) degradation.
+
+		<h2>Examples</h2>
+
+		<h3>Alphabet selector</h3>
+		<button id="first">first</button>
+		<button id="last">last</button>
+		<div class="coverflow">
+			<div class="cover">A</div>
+			<div class="cover">B</div>
+			<div class="cover">C</div>
+			<div class="cover">D</div>
+			<div class="cover">E</div>
+			<div class="cover">F</div>
+			<div class="cover">G</div>
+			<div class="cover">H</div>
+			<div class="cover">I</div>
+			<div class="cover">J</div>
+			<div class="cover">K</div>
+			<div class="cover">L</div>
+			<div class="cover">M</div>
+			<div class="cover">N</div>
+			<div class="cover">O</div>
+			<div class="cover">P</div>
+			<div class="cover">Q</div>
+			<div class="cover">R</div>
+			<div class="cover">S</div>
+			<div class="cover">T</div>
+			<div class="cover">U</div>
+			<div class="cover">V</div>
+			<div class="cover">W</div>
+			<div class="cover">X</div>
+			<div class="cover">Y</div>
+			<div class="cover">Z</div>
+		</div>
+
+		<h3>CD Covers</h3>
+		<div class="photos">
+			<img class="cover" data-name="Arric" src="demo/attic.jpg"/>
+			<img class="cover" data-name="Aurora Borealis" src="demo/aurora.jpg"/>
+			<img class="cover" data-name="Barbecued steak" src="demo/barbecue.jpg"/>
+			<img class="cover" data-name="Black swan" src="demo/blackswan.jpg"/>
+			<img class="cover" data-name="Chess" src="demo/chess.jpg"/>
+			<img class="cover" data-name="Fire" src="demo/fire.jpg"/>
+			<img class="cover" data-name="Keyboard" src="demo/keyboard.jpg"/>
+			<img class="cover" data-name="Locomotive" src="demo/locomotive.jpg"/>
+			<img class="cover" data-name="Novo-Diveevo monastery" src="demo/diveevo.jpg"/>
+			<img class="cover" data-name="Person" src="demo/person.jpg"/>
+			<img class="cover" data-name="Rose" src="demo/rose.jpg"/>
+			<img class="cover" data-name="Seagull" src="demo/seagull.jpg"/>
+			<img class="cover" data-name="Solar power" src="demo/solarpower.jpg"/>
+		</div>
+		<div id="photos-info">
+			<div id="photos-name"></div>
+		</div>
+    </body>
+</html>

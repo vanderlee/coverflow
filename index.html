@@ -1,197 +1,269 @@
 <!DOCTYPE html>
 <html>
-    <head>
+	<head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>jQuery Coverflow</title>
+        <title>jQuery.Coverflow</title>
 
 		<!-- jQuery/jQueryUI (hosted) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.js"></script>
+		<!--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/sunny/jquery-ui.css" rel="stylesheet" type="text/css"/>-->
 
-		<!-- Optional: Reflection -->
-		<script type="text/javascript" src="reflection.js"></script>
+		<!-- Markdown parser -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
 
-		<!-- Mousewheel -->
-		<script src="jquery.mousewheel.min.js"></script>
+		<!-- Prettyprint -->
+		<link href="https://google-code-prettify.googlecode.com/svn/loader/prettify.css" rel="stylesheet" type="text/css"/>
+		<script src="https://google-code-prettify.googlecode.com/svn/loader/prettify.js"></script>
 
-		<!-- interpolate, depends on jQ 1.8.0+ -->
-		<script src="jquery.interpolate.js"></script>
-
-		<!-- Coverflow -->
-		<script src="jquery.coverflow.js"></script>
-
+		<!-- Index -->
 		<style>
 			body {
-				font-family: "Segoe UI", Verdana, Helvetica, Arial, sans-serif;
-				font-size: 11px;
+				font-family:			"Segoe UI", Verdana, Helvetica, Arial, sans-serif;
+				font-size:				11px;
+				padding:				3em 8em 1em 4em;
 			}
 
-			.coverflow {
-				height: 100px;
-				border-bottom: solid 2px black;
+			#menu {
+				margin-bottom:			2em;
 			}
 
-			.coverflow .cover {
-				width: 100px;
-				height: 100px;
-				cursor: pointer;
-				font-size: 500%;
-				border: solid 2px black;
-				text-align: center;
-
-				background: #e2e2e2; /* Old browsers */
-				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2QxZDFkMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZWZlZmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-				background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
-				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe)); /* Chrome,Safari4+ */
-				background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10+,Safari5.1+ */
-				background: -o-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Opera 11.10+ */
-				background: -ms-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* IE10+ */
-				background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C */
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 ); /* IE6-8 */
+			#preview {
+				border:					solid thin silver;
+				padding:				2em;
+				margin:					0 10%;
+				text-align:				center;
+				box-shadow:				0 0 2em silver;
 			}
 
-			.coverflow .cover.current {
-				opacity: 1;
-				border-bottom: none;
+			#book {
+				-webkit-columns:		460px;
+				   -moz-columns:		460px;
+						columns:		460px;
 
-				box-shadow:	0 0 16px rgba(0,0,0,.5);
+				-webkit-column-gap:		4em;
+				   -moz-column-gap:		4em;
+						column-gap:		4em;
 
-				background: #ffffff; /* Old browsers */
-				/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-				background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2YzZjNmMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-				background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%); /* FF3.6+ */
-				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f3f3f3), color-stop(51%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-				background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-				background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Opera 11.10+ */
-				background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* IE10+ */
-				background: linear-gradient(to bottom,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* W3C */
-				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
-			}
-			.coverflow .cover.current:after {
-				content:			' ';
-				background-color:	white;
-				display:			block;
-				position:			absolute;
-				width:				132px;
-				height:				16px;
-				left:				-16px;
-				bottom:				-16px;
+				-webkit-column-rule:	thin solid silver;
+				   -moz-column-rule:	thin solid silver;
+						column-rule:	thin solid silver;
+
+				text-align:				justify;
 			}
 
-			/* CD covers */
-			.photos .cover {
-				cursor: pointer;
-				/*-webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, .5)));*/
+			h1,
+			h2 {
+				background:				black;
+				color:					white;
+				padding:				.2em .4em;
+			}
+			h1 {
+				-webkit-column-span:	all;
+						column-span:	all;
+				margin-top:				1em;
+			}
+			h2 {
+				background:				gray;
 			}
 
-			#photos-info {
-				position:		relative;
-				top:			250px;
-				text-align:		center;
-				z-index:		1000;
-				text-shadow:	0 0 8px white;
+			hr {
+				border-top:			double;
+				margin:				2em 25%;
 			}
 
-			#photos-name {
-				font-size: 200%;
-				font-weight: bold;
+			#footer {
+				margin-top:			4em;
+				text-align:			center;
+				color:				silver;
+				border-top:			thin solid silver;
+				padding-top:		1em;
+			}
+
+			.output {
+				font-family:		monospace;
+				border:				solid thin silver;
+				padding:			.2em .4em;
+				background-color:	#cf3;
+			}
+
+			.clickable {
+				cursor:				pointer;
+			}
+
+			pre {
+				tab-size:			4;
+				overflow-x:			auto;
+				background-color:	#eee;
+				-webkit-column-break-inside: avoid;
 			}
 		</style>
-		
 		<script>
 			$(function() {
-
-				// Alphabet
-
-				$('.coverflow').coverflow();
-
-				$('#first').click(function() {
-					$('.coverflow').coverflow('index', 0);
-				});
-
-				$('#last').click(function() {
-					$('.coverflow').coverflow('index', -1);
-				});
-
-				/* CD covers */
-
-				if ($.fn.reflect) {
-					$('.photos .cover').reflect();
+				function tabsToSpaces(line, tabsize) {
+					var out		= '',
+						tabsize = tabsize || 4,
+						c;
+					for (c in line) {
+						var ch = line.charAt(c);
+						if (ch === '\t') {
+							do {
+								out += ' ';
+							} while (out.length % tabsize);
+						} else {
+							out += ch;
+						}
+					}
+					return out;
 				}
 
-				$('.photos').coverflow({
-					index:			3,
-					width:			320,
-					height:			240,
-					visible:		'density',
-					selectedCss:	{	opacity: 1	},
-					outerCss:		{	opacity: .1	},
+				function visualizeElement(element, type) {
+					var code		= $(element).html().split('\n'),
+						tabsize		= 4,
+						minlength	= 2E53,
+						l;
 
-					select:		function(event, cover) {
-						var img = $(cover).children().andSelf().filter('img').last();
-						$('#photos-name').text(img.data('name') || 'unknown');
+					// Convert tabs to spaces
+					for (l in code) {
+						code[l] = tabsToSpaces(code[l], tabsize);
 					}
+
+
+					// determine minimum length
+					var minlength = 2E53;
+					var first = 2E53;
+					var last = 0;
+					for (l in code) {
+						if (/\S/.test(code[l])) {
+							minlength = Math.min(minlength, /^\s*/.exec(code[l])[0].length);
+							first = Math.min(first, l);
+							last = Math.max(last, l);
+						}
+					}
+
+					code = code.slice(first, last + 1);
+
+					// strip tabs at start
+					for (l in code) {
+						code[l] = code[l].slice(minlength);
+					}
+
+					// recombine
+					code = code.join('\n');
+
+					var fragment = $('<pre class="prettyprint"><code/></pre>').text(code).insertAfter(element);
+					$('<h3 class="clickable">'+type+'&hellip;</h3>').insertBefore(fragment).click(function() {
+						fragment.slideToggle();
+					});
+				}
+
+				// extract html fragments
+				$('div.prettyprint, span.prettyprint').each(function() {
+					visualizeElement(this, 'HTML');
+				});
+
+				// extract scripts
+				$('script.prettyprint').each(function() {
+					visualizeElement(this, 'Javascript');
+				});
+
+				// Include the readme
+				var markdown = new Markdown.Converter();
+				$.get('README.md', function(readme) {
+					$('#readme').html(markdown.makeHtml(readme));
+					$('#readme pre').addClass('prettyprint');
+					prettyPrint();
+
+					// build menu
+					var menuitems = [];
+					$('h1').each(function() {
+						var text	= $(this).text(),
+							id		= $(this).attr('id') || 'chapter '+text;
+						$(this).attr('id', id);
+						menuitems.push('<a href="#'+id+'">'+text+'</a>');
+					});
+					$(menu).html(menuitems.join(' &mdash; '));
 				});
 			});
 		</script>
+
+		<!-- Tristate -->
+		<script src="jquery.coverflow.js"></script>
+		<!-- Support -->
+		<script src="jquery.interpolate.js"></script><!-- Required??? -->
+		<script src="jquery.mousewheel.min.js"></script><!-- Optional, automatic -->
+		<script src="reflection.js"></script><!-- Optional, manual -->
+		<script src="jquery.touchSwipe.min.js"></script><!-- Optional, automatic -->
+
     </head>
     <body>
-		<h1>Coverflow</h1>
-		jQuery Coverflow effect with luxurious transformations (CSS3!) support for reflections and gracefull(ish) degradation.
+		<a href="https://github.com/vanderlee/coverflow"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
-		<h2>Examples</h2>
+		<div id="menu"></div>
 
-		<h3>Alphabet selector</h3>
-		<button id="first">first</button>
-		<button id="last">last</button>
-		<div class="coverflow">
-			<div class="cover">A</div>
-			<div class="cover">B</div>
-			<div class="cover">C</div>
-			<div class="cover">D</div>
-			<div class="cover">E</div>
-			<div class="cover">F</div>
-			<div class="cover">G</div>
-			<div class="cover">H</div>
-			<div class="cover">I</div>
-			<div class="cover">J</div>
-			<div class="cover">K</div>
-			<div class="cover">L</div>
-			<div class="cover">M</div>
-			<div class="cover">N</div>
-			<div class="cover">O</div>
-			<div class="cover">P</div>
-			<div class="cover">Q</div>
-			<div class="cover">R</div>
-			<div class="cover">S</div>
-			<div class="cover">T</div>
-			<div class="cover">U</div>
-			<div class="cover">V</div>
-			<div class="cover">W</div>
-			<div class="cover">X</div>
-			<div class="cover">Y</div>
-			<div class="cover">Z</div>
+		<div id="preview">
+			<div id="preview-coverflow">
+				<img class="cover" src="demo/attic.jpg"/>
+				<img class="cover" src="demo/aurora.jpg"/>
+				<img class="cover" src="demo/barbecue.jpg"/>
+				<img class="cover" src="demo/blackswan.jpg"/>
+				<img class="cover" src="demo/chess.jpg"/>
+				<img class="cover" src="demo/fire.jpg"/>
+				<img class="cover" src="demo/keyboard.jpg"/>
+				<img class="cover" src="demo/locomotive.jpg"/>
+				<img class="cover" src="demo/diveevo.jpg"/>
+				<img class="cover" src="demo/person.jpg"/>
+				<img class="cover" src="demo/rose.jpg"/>
+				<img class="cover" src="demo/seagull.jpg"/>
+				<img class="cover" src="demo/solarpower.jpg"/>
+			</div>
+			<style>
+				#preview-coverflow .cover {
+					width: 200px;
+					height: 150px;
+				}
+			</style>
+			<script>
+				$(function() {
+					if ($.fn.reflect) {
+						//$('#preview-coverflow .cover').reflect();	// only possible in very specific situations
+					}
+
+					$('#preview-coverflow').coverflow({
+						index:			6,
+						visible:		'density',
+						selectedCss:	{	opacity: 1	},
+						outerCss:		{	opacity: .1	},
+					});
+				});
+			</script>
 		</div>
 
-		<h3>CD Covers</h3>
-		<div class="photos">
-			<img class="cover" data-name="Arric" src="demo/attic.jpg"/>
-			<img class="cover" data-name="Aurora Borealis" src="demo/aurora.jpg"/>
-			<img class="cover" data-name="Barbecued steak" src="demo/barbecue.jpg"/>
-			<img class="cover" data-name="Black swan" src="demo/blackswan.jpg"/>
-			<img class="cover" data-name="Chess" src="demo/chess.jpg"/>
-			<img class="cover" data-name="Fire" src="demo/fire.jpg"/>
-			<img class="cover" data-name="Keyboard" src="demo/keyboard.jpg"/>
-			<img class="cover" data-name="Locomotive" src="demo/locomotive.jpg"/>
-			<img class="cover" data-name="Novo-Diveevo monastery" src="demo/diveevo.jpg"/>
-			<img class="cover" data-name="Person" src="demo/person.jpg"/>
-			<img class="cover" data-name="Rose" src="demo/rose.jpg"/>
-			<img class="cover" data-name="Seagull" src="demo/seagull.jpg"/>
-			<img class="cover" data-name="Solar power" src="demo/solarpower.jpg"/>
+		<div ID="book">
+			<div id="readme" class="chapter"></div>
+
+			<div id="examples" class="chapter">
+				<h1>Examples</h1>
+				Try it yourself&hellip;
+
+				<h2>Quick start (look in console)</h2>
+				<div class="prettyprint">
+					//HTML
+				</div>
+				<script class="prettyprint">
+					//SCRIPT
+				</script>
+			</div>
+
+			<div id="unittest" class="chapter">
+				<h1>Unittest</h1>
+				jQuery.tristate comes with a complete set of QUnit-based unittests.<br/>
+				Click here to run the tests in a new window: <a href="unittest/index.html" target="_blank">Unittests</a>
+			</div>
 		</div>
-		<div id="photos-info">
-			<div id="photos-name"></div>
+		
+		<div id="footer">
+			Copyright &copy; 2013 Martijn van der Lee. MIT Open Source license applies.
 		</div>
-    </body>
+	</body>
 </html>
