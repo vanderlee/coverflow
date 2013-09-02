@@ -12,19 +12,8 @@
  * Optional support for jQuery.interpolate() plugin.
  * Optional support for .reflect() plugins.
  *
- * Requires jQuery 1.7+.
- * Recommended jQuery 1.8+ and jQueryUI.
- *
- * @todo Scroll-mode cyclic
- * @todo Display-mode continuous/cyclic
- * @todo Support direct jQueryUI slider hookup?
- * @todo Support mouse-drag to scroll?
- * @todo Support transformie?
- * @todo Take element layout into account
- * @todo Automatic height? Set scaling
- * @todo Flat view if sufficient space
- * @todo Non-linear swipe
- * @todo Replace _trigger with jqui 1.8- compatible
+ * Requires jQuery 1.7+ and jQueryUI 1.9+.
+ * Recommended jQuery 1.8+ and jQueryUI 1.9+.
  */
 
 ;(function($, undefined) {
@@ -39,27 +28,26 @@
 
 	$.widget("vanderlee.coverflow", {
 		options: {
-			easing:			undefined,
-			index:			0,
-			width:			undefined,
-			visible:		'density',		// 'density', 'all', NNN (exact), NNN% (density%)
-			density:		1,
-			duration:		'normal',
-			innerAngle:		-75,
-			outerAngle:		-30,
-			innerScale:		0.75,
-			outerScale:		0.25,
-			innerOffset:	100 / 3,
-			selectedCss:	undefined,
-			innerCss:		undefined,
-			outerCss:		undefined,
+			animateComplete:	undefined,
+			animateStep:		undefined,
+			density:			1,
+			duration:			'normal',
+			easing:				undefined,
+			index:				0,
+			innerAngle:			-75,
+			innerCss:			undefined,
+			innerOffset:		100 / 3,
+			innerScale:			0.75,
+			outerAngle:			-30,
+			outerCss:			undefined,
+			outerScale:			0.25,
+			selectedCss:		undefined,
+			visible:			'density',		// 'density', 'all', NNN (exact)
+			width:				undefined,
 
-			animateStep:	undefined,
-			animateComplete:undefined,
-
-			change:			undefined,		// Whenever index is changed
-			select:			undefined,		// Whenever index is set (also on init)
-			confirm:		undefined		// Whenever clicking on the current item
+			change:				undefined,		// Whenever index is changed
+			confirm:			undefined,		// Whenever clicking on the current item
+			select:				undefined		// Whenever index is set (also on init)
 		},
 
 		_create: function() {
@@ -116,7 +104,7 @@
 			);
 
 			$(window).on('keydown', function(event) {
-				if (that.hovering) {					
+				if (that.hovering) {
 					switch (event.which) {
 						case 36:	// home
 							event.preventDefault();
@@ -236,17 +224,16 @@
 			var that		= this,
 				target		= index || that.options.index,
 				count		= that._getCovers().length,
-				parentWidth	= that.element.width(),
+				parentWidth	= that.element.innerWidth(),
 				coverWidth	= that.options.width || that._getCovers().first().outerWidth(),
-				visible		= that.options.visible === 'density'	? Math.floor(parentWidth * that.options.density / coverWidth)
+				visible		= that.options.visible === 'density'	? Math.round(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
-							: /%$/.test(that.options.visible)		? Math.floor(parentWidth * that.options.density / coverWidth) * parseFloat(that.options.visible) / 100
 							: count,
 				parentLeft	= that.element.position().left - ((1 - that.options.outerScale) * coverWidth * 0.5),
 				space		= (parentWidth - (that.options.outerScale * coverWidth)) * 0.5;
 
 			duration		= duration || 0;
-
+			
 			that.pagesize	= visible;
 
 			that._getCovers().removeClass('current').each(function(index, cover) {
@@ -259,7 +246,7 @@
 								: 0,
 					isMiddle	= position === 0,
 					zIndex		= count - Math.abs(position),
-					left		= parentLeft + space + (isMiddle ? 0 : sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerOffset, space)),
+					left		= parentLeft + space + (isMiddle ? 0 : sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerOffset * that.options.density, space)),
 					scale		= !isVisible? 0
 								: isMiddle	? 1
 								: scl(Math.abs(cos), 1, 0, that.options.innerScale, that.options.outerScale),
