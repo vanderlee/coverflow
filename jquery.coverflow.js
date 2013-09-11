@@ -58,7 +58,7 @@
 
 			that.hovering			= false;
 			that.pagesize			= 1;
-			that.currentIndex		= null;
+			that.currentIndex		= that.options.index;
 
 			// Fix height
 			that.element.height(that._getCovers().first().height());
@@ -184,7 +184,7 @@
 						step		= that.options.index > that.currentIndex ? 1 : -1,
 						doStep		= function() {
 										var steps	= Math.abs(that.options.index - that.currentIndex),
-											time	= duration / Math.max(1, steps) * .5;
+											time	= duration / Math.max(1, steps) * 0.5;
 										if (that.options.index !== that.currentIndex) {
 											that.currentIndex += step;
 											that.refresh.call(that, time, that.currentIndex);
@@ -233,7 +233,7 @@
 				space		= (parentWidth - (that.options.outerScale * coverWidth)) * 0.5;
 
 			duration		= duration || 0;
-			
+
 			that.pagesize	= visible;
 
 			that._getCovers().removeClass('current').each(function(index, cover) {
