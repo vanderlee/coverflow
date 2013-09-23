@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version v1.0.0
+Version v1.0.1
 
 Copyright &copy; 2013 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -77,6 +77,13 @@ Documentation
 -----------------------
 Create one or more coverflows or access an existing coverflow.
 
+Coverflow uses the concepts of "selected", "inner" and "outer" covers. There is
+exactly one selected cover; the one in the middle that is visible as the
+current (or "selected") cover. The inner cover are the ones closest to the
+selected cover on either side. Outer covers are the ones at the very edges of
+the visible field. There may be covers beyond the outer covers, but they will
+not be visible.
+
 ### Options
 
 -	**animateComplete** (function, default: `undefined`)
@@ -95,23 +102,29 @@ Create one or more coverflows or access an existing coverflow.
 
 -	**duration** (integer/string, default: `"normal"`)
 
->	Todo
+>	The speed of animation. Use one of the standard constants "slow", "normal",
+	"fast" or an integer for time in milliseconds.
 
 -	**easing** (string, default: `undefined`)
 
->	Todo
+>	Define an easing method for scrolling. If none is specified, "swing" easing
+	is used by default.
 
 -	**index** (string, integer: `0`)
 
->	Todo
+>	The initial selected index.
 
 -	**innerAngle** (float, integer: `-75`)
 
->	Todo
+>	An angle, in degrees, of the inner covers. Negative values indicate the
+	covers are turned inwards (towards the center). Positive values indicate
+	the covers will be turned outwards.
 
 -	**innerCss** (object, default: `undefined`)
 
->	Todo
+>	A plain object containing CSS properties of the inner covers. Leave
+	undefined if you don't need any CSS changes. You can specify all (and only)
+	the CSS properties supported by jQuery/jQueryUI.
 
 -	**innerOffset** (float, default: `100/3`)
 
@@ -123,11 +136,15 @@ Create one or more coverflows or access an existing coverflow.
 
 -	**outerAngle** (float, integer: `-30`)
 
->	Todo
+>	An angle, in degrees, of the outer covers. Negative values indicate the
+	covers are turned inwards (towards the center). Positive values indicate
+	the covers will be turned outwards.
 
 -	**outerCss** (object, default: `undefined`)
 
->	Todo
+>	A plain object containing CSS properties of the outer covers. Leave
+	undefined if you don't need any CSS changes. You can specify all (and only)
+	the CSS properties supported by jQuery/jQueryUI.
 
 -	**outerScale** (float, integer: `0.25`)
 
@@ -135,7 +152,9 @@ Create one or more coverflows or access an existing coverflow.
 
 -	**selectedCss** (object, default: `undefined`)
 
->	Todo
+>	A plain object containing CSS properties of the selected cover. Leave
+	undefined if you don't need any CSS changes. You can specify all (and only)
+	the CSS properties supported by jQuery/jQueryUI.
 
 -	**visible** (string/float, default: `"density"`)
 
@@ -149,11 +168,12 @@ Create one or more coverflows or access an existing coverflow.
 
 -	**cover**
 
->	Get the currently selected cover jQuery object.
+>	Get the currently selected cover as a jQuery object.
 
 -	**index**
 
->	Get the current index or set the index.
+>	Get or set the current index. If no value is provided, the current index is
+	returned. Otherwise, the index will be set to the provided value.
 
 -	**refresh**
 
@@ -164,15 +184,15 @@ Create one or more coverflows or access an existing coverflow.
 
 -	**change**
 
->	Todo.
+>	Triggered whenever the current cover index changes.
 	function(cover, index)
 
 -	**confirm**
 
->	Todo
+>	Triggered when the user clicks on the current cover.
 	function(cover, index)
 
 -	**select**
 
->	Todo
+>	Triggered whenever a cover is selected. This includes initially.
 	function(cover, index)
