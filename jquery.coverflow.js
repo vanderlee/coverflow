@@ -190,6 +190,8 @@
 											that.refresh.call(that, time, that.currentIndex);
 											timeout = setTimeout(doStep, time);
 										}
+										that._callback('change');
+										that._callback('select');
 									};
 					if (timeout) {
 						clearTimeout(timeout);
@@ -200,9 +202,9 @@
 				} else {
 					this.currentIndex = this.options.index = Math.round(index);
 					this.refresh(this.options.duration);
+					this._callback('change');
+					this._callback('select');
 				}
-				this._callback('change');
-				this._callback('select');
 			} else if (initial === true) {
 				this.refresh();
 				this._callback('select');
