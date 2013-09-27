@@ -62,6 +62,7 @@ There are many more options to tailor it to your needs.
 
 Future
 ------
+-	Optional control mode; keep scrolling while mousebutton down.
 -	Cyclic scrolling (optional)
 -	Cyclic display (optional)
 -	Direct jQueryUI slider hookup
