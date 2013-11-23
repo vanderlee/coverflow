@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version v1.0.2
+Version v1.0.3
 
 Copyright &copy; 2013 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
