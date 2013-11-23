@@ -277,7 +277,7 @@
 					'_angle':	angle	// must be last!
 				}), {
 					'easing':	that.options.easing,
-					'duration': duration,
+					'duration': isVisible ? duration : 0,
 					'step':		function(now, fx) {
 						// Store state
 						state[fx.prop] = now;
