@@ -36,7 +36,7 @@
 				box-shadow:				0 0 2em silver;
 			}
 
-			#book {
+			.chapter {
 				-webkit-columns:		460px;
 				   -moz-columns:		460px;
 						columns:		460px;
@@ -59,8 +59,6 @@
 				padding:				.2em .4em;
 			}
 			h1 {
-				-webkit-column-span:	all;
-						column-span:	all;
 				margin-top:				1em;
 			}
 			h2 {
@@ -171,6 +169,9 @@
 				var markdown = new Markdown.Converter();
 				$.get('README.md', function(readme) {
 					$('#readme').html(markdown.makeHtml(readme));
+					$('#readme h1').each(function() {
+						$(this).nextUntil('h1').wrapAll('<div class="chapter"/>');
+					});
 					$('#readme pre').addClass('prettyprint');
 					prettyPrint();
 
@@ -262,10 +263,10 @@
 		</div>
 
 		<div ID="book">
-			<div id="readme" class="chapter"></div>
+			<div id="readme"></div>
 
+			<h1>Examples</h1>
 			<div id="examples" class="chapter">
-				<h1>Examples</h1>
 				Try it yourself&hellip;
 
 				<h2>Quick start (look in console)</h2>
@@ -277,8 +278,8 @@
 				</script>
 			</div>
 
+			<h1>Unittest</h1>
 			<div id="unittest" class="chapter">
-				<h1>Unittest</h1>
 				jQuery.tristate comes with a complete set of QUnit-based unittests.<br/>
 				Click here to run the tests in a new window: <a href="unittest/index.html" target="_blank">Unittests</a>
 			</div>
