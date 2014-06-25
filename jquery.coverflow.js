@@ -50,6 +50,9 @@
 			select:				undefined		// Whenever index is set (also on init)
 		},
 
+		_window_handler_resize:		null,
+		_window_handler_keydown:	null,
+
 		_create: function() {
 			var that = this;
 
@@ -76,11 +79,6 @@
 				}
 			});
 
-			// Refresh on resize
-			$(window).resize(function() {
-				that.refresh();
-			});
-
 			// Mousewheel
 			that.element.on('mousewheel', function(event, delta) {
 				event.preventDefault();
@@ -103,7 +101,12 @@
 			,	function() { that.hovering = false; }
 			);
 
-			$(window).on('keydown', function(event) {
+			// Refresh on resize
+			that._window_handler_resize = function() {
+				that.refresh();
+			};
+			
+			that._window_handler_keydown = function(event) {
 				if (that.hovering) {
 					switch (event.which) {
 						case 36:	// home
@@ -139,13 +142,26 @@
 							break;
 					}
 				}
-			});
+			};
+
+			$(window).on('resize', that._window_handler_resize);
+			$(window).on('keydown', that._window_handler_keydown);
 
 			// Initialize
 			that._setIndex(that.options.index, false, true);
 			that.refresh();
 
 			return that;
+		},
+
+
+		/**
+		 * Destroy this object
+		 * @returns {undefined}
+		 */
+		_destroy: function() {
+			$(window).off('resize', this._window_handler_resize);
+			$(window).off('keydown', this._window_handler_keydown);
 		},
 
 		/**
