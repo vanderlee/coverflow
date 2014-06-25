@@ -219,6 +219,11 @@
 			if (index === undefined) {
 				return this.options.index;
 			}
+
+			while (index < 0) {
+				index += this._getCovers().length;
+			}
+
 			this._setIndex(index, true);
 		},
 
