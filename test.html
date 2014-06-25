@@ -133,12 +133,22 @@
 						$('#photos-name').text(img.data('name') || 'unknown');
 					}
 				});
+
+				$('#leakdetect').click(function() {
+					$('#leakbucket').empty();
+					for (var i = 0; i < 100; ++i) {
+						$('<div><div>test</div></div>').appendTo('#leakbucket').coverflow();
+					}
+				});
 			});
 		</script>
     </head>
     <body>
 		<h1>Coverflow</h1>
 		jQuery Coverflow effect with luxurious transformations (CSS3!) support for reflections and gracefull(ish) degradation.
+
+		<button id="leakdetect">LeakDetect</button>
+		<div id="leakbucket"></div>
 
 		<h2>Examples</h2>
 
