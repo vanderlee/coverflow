@@ -87,7 +87,6 @@
 
 			#photos-info {
 				position:		relative;
-				top:			250px;
 				text-align:		center;
 				z-index:		1000;
 				text-shadow:	0 0 8px white;
@@ -96,6 +95,10 @@
 			#photos-name {
 				font-size: 200%;
 				font-weight: bold;
+			}
+
+			.clearfix {
+				clear: both;
 			}
 		</style>
 		
@@ -147,9 +150,6 @@
 		<h1>Coverflow</h1>
 		jQuery Coverflow effect with luxurious transformations (CSS3!) support for reflections and gracefull(ish) degradation.
 
-		<button id="leakdetect">LeakDetect</button>
-		<div id="leakbucket"></div>
-
 		<h2>Examples</h2>
 
 		<h3>Alphabet selector</h3>
@@ -186,7 +186,7 @@
 
 		<h3>CD Covers</h3>
 		<div class="photos">
-			<img class="cover" data-name="Arric" src="demo/attic.jpg"/>
+			<img class="cover" data-name="Attic" src="demo/attic.jpg"/>
 			<img class="cover" data-name="Aurora Borealis" src="demo/aurora.jpg"/>
 			<img class="cover" data-name="Barbecued steak" src="demo/barbecue.jpg"/>
 			<img class="cover" data-name="Black swan" src="demo/blackswan.jpg"/>
@@ -203,5 +203,9 @@
 		<div id="photos-info">
 			<div id="photos-name"></div>
 		</div>
+
+		<div class="clearfix"></div>
+		<button id="leakdetect">LeakDetect</button>
+		<div id="leakbucket"></div>
     </body>
 </html>
