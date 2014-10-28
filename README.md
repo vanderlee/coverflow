@@ -30,6 +30,8 @@ p.s. All the plugins optionally supported are MIT licensed, so as safe to use as
 
 Download
 --------
+Install with bower using `bower install coverflow`.
+
 jQuery v1.8.0 or higher required.
 jQuery v1.7.x also works, but without the ability to click on covers to select.
 
