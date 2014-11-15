@@ -61,6 +61,7 @@
 
 			that.hovering			= false;
 			that.pagesize			= 1;
+			that.currentIndex		= that.options.index;
 
 			// Fix height
 			that.element.height(that._getCovers().first().height());
@@ -71,7 +72,7 @@
 			// Enable click-jump
 			that.element.on('click', '> *', function() {
 				var index = that._getCovers().index(this);
-				if (index === that.options.index) {
+				if (index === that.currentIndex) {
 					that._callback('confirm');
 				} else {
 					that._setIndex(index, true);
@@ -196,15 +197,11 @@
 									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default;
 					
 					this.refresh(duration, that.options.index);
-					
-					//@todo redo these
-					that._callback('change');
-					that._callback('select');										
+
+					that.currentIndex	= that.options.index;
 				} else {
-					that.options.index = Math.round(index);
-					that.refresh(that.options.duration);
-					that._callback('change');
-					that._callback('select');
+					that.currentIndex = that.options.index = Math.round(index);
+					that.refresh(0);
 				}
 			} else if (initial === true) {
 				that.refresh();
@@ -213,7 +210,7 @@
 		},
 
 		_callback: function(callback) {
-			this._trigger(callback, null, this._getCovers().get(this.options.index), this.options.index);
+			this._trigger(callback, null, this._getCovers().get(this.currentIndex), this.currentIndex);
 		},
 
 		index: function(index) {
@@ -286,12 +283,18 @@
 				}));
 				
 				// Optional callback
-				that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, sin, cos]);				
+				that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
+				
+				if (frame === that.options.index) {
+					// Optional callback
+					that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);					
+				}
 			});
 		},
 
 		refresh: function(duration, index) {
-			var that = this;
+			var that = this,
+				previous = null;
 			
 			that.element.stop().animate({
 				'__coverflow_frame':	index  || that.options.index,
@@ -300,10 +303,15 @@
 				'duration': duration || 0,
 				'step':		function(now, fx) {
 					that._frame(fx.now);
+					that.currentIndex	= Math.round(fx.now);
+					if (previous !== that.currentIndex && that.currentIndex !== that.options.index) {
+						that._callback('change');						
+						that._callback('select');
+					}
 				},
 				'complete':		function() {
-					// Optional callback
-					//that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
+					that._callback('change');
+					that._callback('select');
 				}
 			});
 		}
