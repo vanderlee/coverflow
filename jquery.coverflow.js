@@ -181,49 +181,56 @@
 		},
 
 		_setIndex: function(index, animate, initial) {
-			var covers = this._getCovers();
+			var that = this,
+				covers = that._getCovers();
 
 			index = Math.max(0, Math.min(index, covers.length - 1));
 
-			if (index !== this.options.index) {
+			if (index !== that.options.index) {
 				this.refresh();		// pre-correct for reflection/mods
 
 				if (animate === true) {
-					this.currentIndex	= this.options.index;
-					this.options.index	= Math.round(index);
+					that.currentIndex	= that.options.index;
+					that.options.index	= Math.round(index);
 
-					var that		= this,
+					var stepCount	= Math.abs(that.options.index - that.currentIndex),
 						duration	= typeof that.options.duration === "number"
 									? that.options.duration
 									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default,
 						timeout		= null,
-						step		= that.options.index > that.currentIndex ? 1 : -1,
-						doStep		= function() {
-										var steps	= Math.abs(that.options.index - that.currentIndex),
-											time	= duration / Math.max(1, steps) * 0.5;
-										if (that.options.index !== that.currentIndex) {
-											that.currentIndex += step;
-											that.refresh.call(that, time, that.currentIndex);
-											timeout = setTimeout(doStep, time);
-										}
+						increment	= that.options.index > that.currentIndex ? 1 : -1,
+						doStep		= function() {																				
+										var stepsToGo		= Math.abs(that.currentIndex - index),
+											remainingTime	= Math.max(0, duration - (new Date().getTime() - startTime)),
+											stepTime		= remainingTime / stepsToGo;
+											
+											that.refresh.call(that, stepTime, that.currentIndex += increment);
+
+											if (that.options.index !== that.currentIndex) {
+												timeout = setTimeout(doStep, stepTime);
+											}
+										
 										that._callback('change');
 										that._callback('select');
-									};
+									},
+						startTime	= new Date().getTime();
+						
 					if (timeout) {
 						clearTimeout(timeout);
 					}
+					
 					if (that.currentIndex !== this.options.index) {
 						doStep();
 					}
 				} else {
-					this.currentIndex = this.options.index = Math.round(index);
-					this.refresh(this.options.duration);
-					this._callback('change');
-					this._callback('select');
+					that.currentIndex = that.options.index = Math.round(index);
+					that.refresh(that.options.duration);
+					that._callback('change');
+					that._callback('select');
 				}
 			} else if (initial === true) {
-				this.refresh();
-				this._callback('select');
+				that.refresh();
+				that._callback('select');
 			}
 		},
 
