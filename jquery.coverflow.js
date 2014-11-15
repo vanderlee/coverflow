@@ -61,7 +61,6 @@
 
 			that.hovering			= false;
 			that.pagesize			= 1;
-			that.currentIndex		= that.options.index;
 
 			// Fix height
 			that.element.height(that._getCovers().first().height());
@@ -72,7 +71,7 @@
 			// Enable click-jump
 			that.element.on('click', '> *', function() {
 				var index = that._getCovers().index(this);
-				if (index === that.currentIndex) {
+				if (index === that.options.index) {
 					that._callback('confirm');
 				} else {
 					that._setIndex(index, true);
@@ -190,40 +189,19 @@
 				this.refresh();		// pre-correct for reflection/mods
 
 				if (animate === true) {
-					that.currentIndex	= that.options.index;
 					that.options.index	= Math.round(index);
-
-					var stepCount	= Math.abs(that.options.index - that.currentIndex),
-						duration	= typeof that.options.duration === "number"
-									? that.options.duration
-									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default,
-						timeout		= null,
-						increment	= that.options.index > that.currentIndex ? 1 : -1,
-						doStep		= function() {																				
-										var stepsToGo		= Math.abs(that.currentIndex - index),
-											remainingTime	= Math.max(0, duration - (new Date().getTime() - startTime)),
-											stepTime		= remainingTime / stepsToGo;
-											
-											that.refresh.call(that, stepTime, that.currentIndex += increment);
-
-											if (that.options.index !== that.currentIndex) {
-												timeout = setTimeout(doStep, stepTime);
-											}
-										
-										that._callback('change');
-										that._callback('select');
-									},
-						startTime	= new Date().getTime();
-						
-					if (timeout) {
-						clearTimeout(timeout);
-					}
 					
-					if (that.currentIndex !== this.options.index) {
-						doStep();
-					}
+					var duration	= typeof that.options.duration === "number"
+									? that.options.duration
+									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default;
+					
+					this.refresh(duration, that.options.index);
+					
+					//@todo redo these
+					that._callback('change');
+					that._callback('select');										
 				} else {
-					that.currentIndex = that.options.index = Math.round(index);
+					that.options.index = Math.round(index);
 					that.refresh(that.options.duration);
 					that._callback('change');
 					that._callback('select');
@@ -235,7 +213,7 @@
 		},
 
 		_callback: function(callback) {
-			this._trigger(callback, null, this._getCovers().get(this.currentIndex), this.currentIndex);
+			this._trigger(callback, null, this._getCovers().get(this.options.index), this.options.index);
 		},
 
 		index: function(index) {
@@ -249,40 +227,34 @@
 
 			this._setIndex(index, true);
 		},
-
-		refresh: function(duration, index) {
+		
+		_frame: function(frame) {
+			frame = frame.toFixed(6);		
+				
 			var that		= this,
-				target		= index || that.options.index,
-				count		= that._getCovers().length,
+				covers		= that._getCovers(),
+				count		= covers.length,
 				parentWidth	= that.element.innerWidth(),
-				coverWidth	= that.options.width || that._getCovers().first().outerWidth(),
+				coverWidth	= that.options.width || covers.first().outerWidth(),
 				visible		= that.options.visible === 'density'	? Math.round(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
 							: count,
 				parentLeft	= that.element.position().left - ((1 - that.options.outerScale) * coverWidth * 0.5),
 				space		= (parentWidth - (that.options.outerScale * coverWidth)) * 0.5;
-
-			duration		= duration || 0;
-
+		
 			that.pagesize	= visible;
-
-			that._getCovers().removeClass('current').each(function(index, cover) {
-				var position	= index - target,
+			
+			covers.removeClass('current').each(function(index, cover) {
+				var position	= index - frame,
 					offset		= position / visible,
+					isMiddle	= position == 0,
+					zIndex		= count - Math.abs(Math.round(position)),
 					isVisible	= Math.abs(offset) <= 1,
-					sin			= isVisible ? Math.sin(offset * Math.PI * 0.5)
-								: sign(offset),
-					cos			= isVisible ? Math.cos(offset * Math.PI * 0.5)
-								: 0,
-					isMiddle	= position === 0,
-					zIndex		= count - Math.abs(position),
-					left		= parentLeft + space + (isMiddle ? 0 : sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerOffset * that.options.density, space)),
-					scale		= !isVisible? 0
-								: isMiddle	? 1
-								: scl(Math.abs(cos), 1, 0, that.options.innerScale, that.options.outerScale),
-					angle		= isMiddle	? 0
-								: sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerAngle, that.options.outerAngle),
-					state		= {},
+					sin			= Math.sin(offset * Math.PI * 0.5),
+					cos			= Math.cos(offset * Math.PI * 0.5),
+					left		= sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerOffset * that.options.density, space),
+					scale		= isVisible ? scl(Math.abs(cos), 1, 0, that.options.innerScale, that.options.outerScale) : 0,
+					angle		= sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerAngle, that.options.outerAngle),
 					css			= isMiddle ? that.options.selectedCss || {}
 								: ( $.interpolate && that.options.outerCss && !$.isEmptyObject(that.options.outerCss) ? (
 									isVisible ? $.interpolate(that.options.innerCss || {}, that.options.outerCss, Math.abs(sin))
@@ -290,47 +262,49 @@
 									) : {}
 								),
 					transform;
-
-				if (isVisible) {
-					$(cover).show();
+							
+				// bad behaviour for being in the middle
+				if (Math.abs(position) < 1) {
+					angle	= 0 - (0 - angle) * Math.abs(position);
+					scale	= 1 - (1 - scale) * Math.abs(position);
+					left	= 0 - (0 - left) * Math.abs(position);
 				}
+				
+				//@todo Test CSS for middle behaviour (or does $.interpolate handle it?)
 
-				$(cover).stop().css({
-					'z-index':	zIndex
-				}).animate($.extend(css, {
-					'left':		left,
-					'_sin':		sin,
-					'_cos':		cos,
-					'_scale':	scale,
-					'_angle':	angle	// must be last!
-				}), {
-					'easing':	that.options.easing,
-					'duration': isVisible ? duration : 0,
-					'step':		function(now, fx) {
-						// Store state
-						state[fx.prop] = now;
+				transform = 'scale(' + scale + ',' + scale + ') perspective(' + (parentWidth * 0.5) + 'px) rotateY(' + angle + 'deg)';
+				
+				$(cover)[isMiddle ? 'addClass' : 'removeClass']('current');
+				$(cover)[isVisible ? 'show' : 'hide']();
+						
+				$(cover).css($.extend(css, {
+					'left':					parentLeft + space + left,
+					'z-index':				zIndex,
+					'-webkit-transform':	transform,
+					'-ms-transform':		transform,
+					'transform':			transform
+				}));
+				
+				// Optional callback
+				that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, sin, cos]);				
+			});
+		},
 
-						// On last of the states, change all at once
-						if (fx.prop === '_angle') {
-							transform = 'scale(' + state._scale + ',' + state._scale + ') perspective('+(parentWidth * 0.5)+'px) rotateY(' + state._angle + 'deg)';
-							$(this).css({
-								'-webkit-transform':	transform,
-								'-ms-transform':		transform,
-								'transform':			transform
-							});
-
-							// Optional callback
-							that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, state._sin, state._cos]);
-						}
-					},
-					'complete':		function() {
-						$(this)[isMiddle ? 'addClass' : 'removeClass']('current');
-						$(this)[isVisible ? 'show' : 'hide']();
-
-						// Optional callback
-						that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
-					}
-				});
+		refresh: function(duration, index) {
+			var that = this;
+			
+			that.element.stop().animate({
+				'__coverflow_frame':	index  || that.options.index,
+			}, {
+				'easing':	that.options.easing,
+				'duration': duration || 0,
+				'step':		function(now, fx) {
+					that._frame(fx.now);
+				},
+				'complete':		function() {
+					// Optional callback
+					//that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
+				}
 			});
 		}
 	});
