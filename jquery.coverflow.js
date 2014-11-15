@@ -149,7 +149,6 @@
 
 			// Initialize
 			that._setIndex(that.options.index, false, true);
-			that.refresh();
 
 			return that;
 		},
@@ -189,7 +188,7 @@
 			if (index !== that.options.index) {
 				this.refresh();		// pre-correct for reflection/mods
 
-				if (animate === true) {
+				if (animate === true || that.options.duration === 0) {
 					that.options.index	= Math.round(index);
 					
 					var duration	= typeof that.options.duration === "number"
