@@ -197,10 +197,8 @@
 									: jQuery.fx.speeds[that.options.duration] || jQuery.fx.speeds._default;
 					
 					this.refresh(duration, that.options.index);
-
-					that.currentIndex	= that.options.index;
 				} else {
-					that.currentIndex = that.options.index = Math.round(index);
+					that.options.index = Math.round(index);
 					that.refresh(0);
 				}
 			} else if (initial === true) {
@@ -295,21 +293,23 @@
 		refresh: function(duration, index) {
 			var that = this,
 				previous = null;
-			
+					
 			that.element.stop().animate({
 				'__coverflow_frame':	index  || that.options.index,
 			}, {
 				'easing':	that.options.easing,
 				'duration': duration || 0,
-				'step':		function(now, fx) {
-					that._frame(fx.now);
-					that.currentIndex	= Math.round(fx.now);
+				'step':		function(now, fx) {					
+					that._frame(now);
+					
+					that.currentIndex	= Math.round(now);
 					if (previous !== that.currentIndex && that.currentIndex !== that.options.index) {
 						that._callback('change');						
 						that._callback('select');
 					}
 				},
 				'complete':		function() {
+					that.currentIndex	= that.options.index;					
 					that._callback('change');
 					that._callback('select');
 				}
