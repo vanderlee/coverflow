@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version v1.0.4
+Version v1.1.0
 
 Copyright &copy; 2013-2014 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -61,6 +61,10 @@ There are many more options to tailor it to your needs.
 			$('.coverflow').coverflow();
 		});
 	</script>
+
+Issues
+------
+-	Edge items fade out instead of plain hide/show
 
 Future
 ------

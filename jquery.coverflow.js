@@ -7,6 +7,7 @@
  * Copyright (c) 2013-2014 Martijn W. van der Lee
  * Licensed under the MIT.
  */
+
 /* Lightweight and flexible coverflow effect using CSS3 transforms.
  * For modern browsers with some amount of graceful degradation.
  * Optional support for jQuery.interpolate() plugin.
