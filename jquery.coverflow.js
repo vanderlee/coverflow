@@ -70,7 +70,7 @@
 			that._getCovers().hide().css('position', 'absolute');
 
 			// Enable click-jump
-			that.element.on('click', '> *', function() {
+			that.element.on('mousedown', '> *', function() {
 				var index = that._getCovers().index(this);
 				if (index === that.currentIndex) {
 					that._callback('confirm');
@@ -239,11 +239,12 @@
 			that.pagesize	= visible;
 			
 			covers.removeClass('current').each(function(index, cover) {
-				var position	= index - frame,
-					offset		= position / visible,
+				var $cover		= $(cover),
+					position	= index - frame,
+					offset		= Math.min(Math.max(-1., position / visible), 1),
 					isMiddle	= position == 0,
 					zIndex		= count - Math.abs(Math.round(position)),
-					isVisible	= Math.abs(offset) <= 1,
+					isVisible	= Math.abs(position) <= visible,
 					sin			= Math.sin(offset * Math.PI * 0.5),
 					cos			= Math.cos(offset * Math.PI * 0.5),
 					left		= sign(sin) * scl(Math.abs(sin), 0, 1, that.options.innerOffset * that.options.density, space),
@@ -268,10 +269,10 @@
 
 				transform = 'scale(' + scale + ',' + scale + ') perspective(' + (parentWidth * 0.5) + 'px) rotateY(' + angle + 'deg)';
 				
-				$(cover)[isMiddle ? 'addClass' : 'removeClass']('current');
-				$(cover)[isVisible ? 'show' : 'hide']();
+				$cover[isMiddle ? 'addClass' : 'removeClass']('current');
+				$cover[isVisible ? 'show' : 'hide']();				
 						
-				$(cover).css($.extend(css, {
+				$cover.css($.extend(css, {
 					'left':					parentLeft + space + left,
 					'z-index':				zIndex,
 					'-webkit-transform':	transform,
@@ -291,7 +292,8 @@
 
 		refresh: function(duration, index) {
 			var that = this,
-				previous = null;
+				previous = null,
+				covercount = that._getCovers().length;
 					
 			that.element.stop().animate({
 				'__coverflow_frame':	index  || that.options.index,
@@ -299,13 +301,14 @@
 				'easing':	that.options.easing,
 				'duration': duration || 0,
 				'step':		function(now, fx) {					
-					that._frame(now);
+					that._frame(now);					
 					
-					that.currentIndex	= Math.round(now);
-					if (previous !== that.currentIndex && that.currentIndex !== that.options.index) {
+					that.currentIndex = Math.max(0, Math.min(Math.round(now), covercount - 1));
+					if (previous !== that.currentIndex) {
+						previous = that.currentIndex;
 						that._callback('change');						
 						that._callback('select');
-					}
+					}					
 				},
 				'complete':		function() {
 					that.currentIndex	= that.options.index;					

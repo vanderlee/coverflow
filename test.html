@@ -132,11 +132,16 @@
 					visible:		'density',
 					selectedCss:	{	opacity: 1	},
 					outerCss:		{	opacity: .1	},
+					
+					confirm:		function() {
+						console.log('Confirm');
+					},
 
 					select:		function(event, cover) {
 						var img = $(cover).children().andSelf().filter('img').last();
 						$('#photos-name').text(img.data('name') || 'unknown');
 					}
+					
 				});	
 
 				$('#leakdetect').click(function() {
