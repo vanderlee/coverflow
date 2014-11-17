@@ -65,6 +65,7 @@
 			that.currentIndex		= that.options.index;
 
 			// Fix height
+			//@todo This needs to change. See issue #7
 			that.element.height(that._getCovers().first().height());
 
 			// Hide all covers and set position to absolute
