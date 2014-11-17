@@ -55,7 +55,10 @@
 		_window_handler_keydown:	null,
 
 		_create: function() {
-			var that = this;
+			var that = this,
+				covers = that._getCovers(),
+				images = covers.filter('img').add('img', covers),
+				imageCount = 0;
 
 			// Internal event prefix
 			that.widgetEventPrefix	= 'vanderlee-coverflow';
@@ -65,11 +68,15 @@
 			that.currentIndex		= that.options.index;
 
 			// Fix height
-			//@todo This needs to change. See issue #7
-			that.element.height(that._getCovers().first().height());
+			that.element.height(covers.height());
+			images.load(function() {
+				if (++imageCount >= images.length) {
+					that.element.height(that._getCovers().height());
+				}
+			});
 
 			// Hide all covers and set position to absolute
-			that._getCovers().hide().css('position', 'absolute');
+			covers.hide().css('position', 'absolute');
 
 			// Enable click-jump
 			that.element.on('mousedown tap', '> *', function() {
