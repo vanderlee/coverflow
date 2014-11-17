@@ -58,7 +58,7 @@
 			var that = this,
 				covers = that._getCovers(),
 				images = covers.filter('img').add('img', covers).filter(function() {
-					return !$(this).prop('complete');
+					return !(this.complete || this.width + this.height > 0);
 				}),
 				maxHeight = covers.height(),
 				height;
