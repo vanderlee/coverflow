@@ -57,8 +57,11 @@
 		_create: function() {
 			var that = this,
 				covers = that._getCovers(),
-				images = covers.filter('img').add('img', covers),
-				imageCount = 0;
+				images = covers.filter('img').add('img', covers).filter(function() {
+					return !$(this).prop('complete');
+				}),
+				maxHeight = covers.height(),
+				height;
 
 			// Internal event prefix
 			that.widgetEventPrefix	= 'vanderlee-coverflow';
@@ -68,10 +71,12 @@
 			that.currentIndex		= that.options.index;
 
 			// Fix height
-			that.element.height(covers.height());
+			that.element.height(maxHeight);
 			images.load(function() {
-				if (++imageCount >= images.length) {
-					that.element.height(that._getCovers().height());
+				height = that._getCovers().height();
+				if (height > maxHeight) {
+					maxHeight = height;
+					that.element.height(maxHeight);
 				}
 			});
 
