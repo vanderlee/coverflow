@@ -71,7 +71,7 @@
 			that._getCovers().hide().css('position', 'absolute');
 
 			// Enable click-jump
-			that.element.on('mousedown', '> *', function() {
+			that.element.on('mousedown tap', '> *', function() {
 				var index = that._getCovers().index(this);
 				if (index === that.currentIndex) {
 					that._callback('confirm');
@@ -297,7 +297,7 @@
 				covercount = that._getCovers().length;
 					
 			that.element.stop().animate({
-				'__coverflow_frame':	index  || that.options.index,
+				'__coverflow_frame':	index  || that.options.index
 			}, {
 				'easing':	that.options.easing,
 				'duration': duration || 0,
