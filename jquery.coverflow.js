@@ -58,7 +58,7 @@
 			var that = this,
 				covers = that._getCovers(),
 				images = covers.filter('img').add('img', covers).filter(function() {
-					return !(this.complete || this.width + this.height > 0);
+					return !(this.complete || this.height > 0);
 				}),
 				maxHeight = covers.height(),
 				height;
@@ -69,7 +69,7 @@
 			that.hovering			= false;
 			that.pagesize			= 1;
 			that.currentIndex		= that.options.index;
-
+			
 			// Fix height
 			that.element.height(maxHeight);
 			images.load(function() {
