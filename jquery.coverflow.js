@@ -81,7 +81,7 @@
 			});
 
 			// Hide all covers and set position to absolute
-			covers.hide().css('position', 'absolute');
+			covers.hide();
 
 			// Enable click-jump
 			that.element.on('mousedown tap', '> *', function() {
@@ -307,7 +307,10 @@
 		refresh: function(duration, index) {
 			var that = this,
 				previous = null,
-				covercount = that._getCovers().length;
+				covers = that._getCovers(),
+				covercount = covers.length;
+		
+			covers.css('position', 'absolute');
 					
 			that.element.stop().animate({
 				'__coverflow_frame':	index  || that.options.index
