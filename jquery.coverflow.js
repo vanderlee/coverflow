@@ -84,10 +84,10 @@
 			covers.hide();
 
 			// Enable click-jump
-			that.element.on('mousedown tap', '> *', function() {
+			that.element.on('mousedown tap', '> *', function(event) {
 				var index = that._getCovers().index(this);
 				if (index === that.currentIndex) {
-					that._callback('confirm');
+					that._callback('confirm', event);
 				} else {
 					that._setIndex(index, true);
 				}
@@ -220,8 +220,8 @@
 			}
 		},
 
-		_callback: function(callback) {
-			this._trigger(callback, null, this._getCovers().get(this.currentIndex), this.currentIndex);
+		_callback: function(callback, event) {
+			this._trigger(callback, event, this._getCovers().get(this.currentIndex), this.currentIndex);
 		},
 
 		index: function(index) {
