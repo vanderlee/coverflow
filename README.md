@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version v1.1.5
+Version v1.1.6
 
 Copyright &copy; 2013-2014 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -81,8 +81,8 @@ Future
 
 Documentation
 =============
-'.coverflow(options)'
------------------------
+.coverflow(options)
+-------------------
 Create one or more coverflows or access an existing coverflow.
 
 Coverflow uses the concepts of "selected", "inner" and "outer" covers. There is
@@ -192,15 +192,34 @@ not be visible.
 
 -	**change**
 
->	Triggered whenever the current cover index changes.
-	function(cover, index)
+	Triggered whenever the current cover index changes.
+	`function(event, cover, index)`
 
 -	**confirm**
 
->	Triggered when the user clicks on the current cover.
-	function(cover, index)
+	Triggered when the user clicks on the current cover.
+
+	Callback signature: `function(event, cover, index)`
+
+	`event.originalEvent.target` contains the DOM element that was clicked to
+	trigger the confirm event.
 
 -	**select**
 
->	Triggered whenever a cover is selected. This includes initially.
-	function(cover, index)
+	Triggered whenever a cover is selected. This includes initially.
+	`function(event, cover, index)`
+
+-	**animateStep**
+
+	Triggered for every animation frame. Use this event to customize how the
+	animation looks if the default options provide insufficient control.
+
+	Callback signature: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`
+
+-	**animateComplete**
+
+	Triggered after the animation has stopped. A final `animateStep` will
+	be triggered after animation as well, so you don't need to use the
+	`animateComplete` event for normal animation frames.
+
+	Callback signature: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`

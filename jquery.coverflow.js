@@ -221,7 +221,7 @@
 		},
 
 		_callback: function(callback, event) {
-			this._trigger(callback, event, this._getCovers().get(this.currentIndex), this.currentIndex);
+			this._trigger(callback, event, [this._getCovers().get(this.currentIndex), this.currentIndex]);
 		},
 
 		index: function(index) {
@@ -295,11 +295,11 @@
 				}));
 				
 				// Optional callback
-				that._trigger('animateStep', cover, [cover, offset, isVisible, isMiddle, sin, cos]);
+				that._trigger('animateStep', null, [cover, offset, isVisible, isMiddle, sin, cos]);
 				
 				if (frame === that.options.index) {
 					// Optional callback
-					that._trigger('animateComplete', cover, [cover, offset, isVisible, isMiddle, sin, cos]);					
+					that._trigger('animateComplete', null, [cover, offset, isVisible, isMiddle, sin, cos]);					
 				}
 			});
 		},
