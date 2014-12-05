@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>jQuery Coverflow</title>
+
+		<!-- jQuery/jQueryUI (hosted) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.js"></script>
+
+		<!-- Optional: Reflection -->
+		<script type="text/javascript" src="reflection.js"></script>
+
+		<!-- Mousewheel -->
+		<script src="jquery.mousewheel.js"></script>
+
+		<!-- interpolate, depends on jQ 1.8.0+ -->
+		<script src="jquery.interpolate.js"></script>
+
+		<!-- Coverflow -->
+		<script src="jquery.coverflow.js"></script>
+
+		<style>
+			#preview {
+				padding-bottom: 100px;
+			}
+			#preview-coverflow .cover {
+				cursor: pointer;
+				width: 320px;
+				box-shadow: 0 0 4em 1em white;
+			}
+		</style>
+		
+		<script>
+			$(function () {
+				var coverflowEl = $("#preview-coverflow");
+				coverflowEl.coverflow({
+					index: 20,
+					density: 2,
+					innerOffset: 50,
+					innerScale: .7,
+				});
+				$("#add-button").on("click", function () {
+					var currentIndex = coverflowEl.coverflow("index");
+					coverflowEl.append($('<img class="cover" src="http://fillmurray.com/220/60/" />'));
+					coverflowEl.coverflow("refresh", currentIndex);
+				});
+			});
+		</script>
+    </head>
+    <body>
+		<div id="preview">
+			<div id="preview-coverflow">
+				<img class="cover" src="http://fillmurray.com/200/100/" />
+				<img class="cover" src="http://fillmurray.com/200/50" />
+			</div>
+		</div>
+		<div>
+			<button id="add-button">Add</button>
+		</div>
+    </body>
+</html>

@@ -175,6 +175,7 @@
 		_destroy: function() {
 			$(window).off('resize', this._window_handler_resize);
 			$(window).off('keydown', this._window_handler_keydown);
+			this.element.height('');
 		},
 
 		/**
