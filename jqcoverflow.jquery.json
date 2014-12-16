@@ -1,6 +1,6 @@
 {
 	"name": "jqcoverflow",
-	"version": "1.1.7",
+	"version": "1.1.8",
 	"title": "Vanderlee Coverflow",
 	"description": "A jQuery-based Coverflow components with optional mousewheel, CSS3 interpolation, transformations, touch swipe, reflections and more.",
 	"author": {
