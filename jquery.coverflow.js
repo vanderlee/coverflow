@@ -298,7 +298,7 @@
 				// Optional callback
 				that._trigger('animateStep', null, [cover, offset, isVisible, isMiddle, sin, cos]);
 				
-				if (frame === that.options.index) {
+				if (frame == that.options.index) {
 					// Optional callback
 					that._trigger('animateComplete', null, [cover, offset, isVisible, isMiddle, sin, cos]);					
 				}
