@@ -114,6 +114,10 @@
 					$('.coverflow').coverflow('index', -1);
 				});
 
+				$('#goto6').click(function() {
+					$('.coverflow').coverflow('index', 6-1);	// zero-based index!
+				});
+
 				/* CD covers */
 
 				if ($.fn.reflect) {
@@ -158,6 +162,7 @@
 
 		<h3>Alphabet selector</h3>
 		<button id="first">first</button>
+		<button id="goto6">6</button>
 		<button id="last">last</button>
 		<div class="coverflow">
 			<div class="cover">A</div>
