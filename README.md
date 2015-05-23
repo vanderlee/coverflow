@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version v1.1.8
+Version v1.1.9
 
 Copyright &copy; 2013-2014 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -17,8 +17,7 @@ Features
 *	Animation easing and duration.
 *	Separate CSS styles for the selected, innermost and outermost styles, all smoothly transitioning.
 *	Support for your own transitioning code, should you want to use weird CSS tricks such as CSS3 filters.
-*	Optional mousewheel support.
-	Simply add Brandon Aaron's mousewheel plugin, available from https://github.com/brandonaaron/jquery-mousewheel and included with Coverflow.
+*	Builtin mousewheel support.
 *	Optional support for complex CSS transitions.
 	Simply add my own interpolate plugin, included with Coverflow.
 *	Optional support for reflections (need to enable manually).
@@ -28,8 +27,8 @@ Features
 
 p.s. All the plugins optionally supported are MIT licensed, so as safe to use as the Coverflow plugin itself.
 
-Download
---------
+Download & Install
+------------------
 Install with bower using `bower install coverflow`.
 
 jQuery v1.8.0 or higher required.
@@ -61,23 +60,6 @@ There are many more options to tailor it to your needs.
 			$('.coverflow').coverflow();
 		});
 	</script>
-
-Issues
-------
-*	Edge items fade out instead of plain hide/show
-
-Future plans
-------------
-*	Optional control mode; keep scrolling while mousebutton down.
-*	Cyclic scrolling (optional)
-*	Cyclic display (optional)
-*	Direct jQueryUI slider hookup
-*	Support for transformie
-*	Better automatic height calculation
-*	Flat view if sufficient space (optional)
-*	Non-linear swipe
-*	Optional motion swipe
-*	Lower jQuery/jQueryUI requirements
 
 Documentation
 =============

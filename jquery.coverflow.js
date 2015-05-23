@@ -20,12 +20,20 @@
 ;(function($, undefined) {
 	"use strict";
 
-	var sign	= function(number) {
-					return number < 0 ? -1 : 1;
-				},
-		scl		= function(number, fromMin, fromMax, toMin, toMax) {
-					return ((number - fromMin) * (toMax - toMin) / (fromMax - fromMin)) + toMin;
-				};
+	var sign		= function(number) {
+						return number < 0 ? -1 : 1;
+					},
+		scl			= function(number, fromMin, fromMax, toMin, toMax) {
+						return ((number - fromMin) * (toMax - toMin) / (fromMax - fromMin)) + toMin;
+					},
+		wheelEvents	= ('onwheel' in document) ? 'wheel' : 'mousewheel',	// FF
+		getWheel	= function(event) {
+						if ('deltaY' in event.originalEvent) {
+							return 0 - event.originalEvent.deltaY;
+						} else if ('wheelDelta' in event.originalEvent) { 
+							return event.originalEvent.wheelDelta;	// IE
+						}
+					};;
 
 	$.widget("vanderlee.coverflow", {
 		options: {
@@ -94,7 +102,9 @@
 			});
 
 			// Mousewheel
-			that.element.on('mousewheel', function(event, delta) {
+			that.element.on(wheelEvents, function(event) {
+				var delta = getWheel(event) > 0 ? 1 : -1;
+				
 				event.preventDefault();
 				that._setIndex(that.options.index - delta, true);
 			});
