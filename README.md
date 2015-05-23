@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version 1.1.9
+Version 1.1.10
 
 Copyright &copy; 2013-2015 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -147,31 +147,37 @@ or removing covers or changing the covers yourself.
 Events
 ------
 ### **change**
-Triggered whenever the current cover index changes.
+Triggered whenever the current cover index changes. This includes initially and
+for each cover passed by when skipping past multiple covers. Change triggers as
+soon as the cover is on front; this may be before or after it's animation is
+completed (but only once!).
 
-`function(event, cover, index)`
+Callback: `function(event, cover, index)`
 
 ### **confirm**
 Triggered when the user clicks on the current cover.
 
-Callback signature: `function(event, cover, index)`
+Callback: `function(event, cover, index)`
 
 `event.originalEvent.target` contains the DOM element that was clicked to
 trigger the confirm event.
 
 ### **select**
-Triggered whenever a cover is selected. This includes initially.
-`function(event, cover, index)`
+Triggered whenever a cover is selected. This includes initially. In contrast to
+the `change` event, `select` only triggers once after the requested cover
+position has been reached.
+
+Callback: `function(event, cover, index)`
 
 ### **animateStep**
 Triggered for every animation frame. Use this event to customize how the
 animation looks if the default options provide insufficient control.
 
-Callback signature: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`
+Callback: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`
 
 ### **animateComplete**
 Triggered after the animation has stopped. A final `animateStep` will
 be triggered after animation as well, so you don't need to use the
 `animateComplete` event for normal animation frames.
 
-Callback signature: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`
+Callback: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`

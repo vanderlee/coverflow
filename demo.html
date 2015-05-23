@@ -134,7 +134,7 @@
 						console.log('Confirm');
 					},
 
-					select:		function(event, cover) {
+					change:			function(event, cover) {
 						var img = $(cover).children().andSelf().filter('img').last();
 						$('#photos-name').text(img.data('name') || 'unknown');
 					}

@@ -130,7 +130,7 @@
 				that.refresh();
 			};
 			
-			that._window_handler_keydown = function(event) {
+			that._window_handler_keydown = function(event) {						
 				if (that.hovering) {
 					switch (event.which) {
 						case 36:	// home
@@ -211,7 +211,9 @@
 			index = Math.max(0, Math.min(index, covers.length - 1));
 
 			if (index !== that.options.index) {
-				this.refresh();		// pre-correct for reflection/mods
+				// Fix reflections
+				covers.css('position', 'absolute');
+				this._frame(that.options.index);						
 
 				if (animate === true || that.options.duration === 0) {
 					that.options.index	= Math.round(index);
@@ -315,16 +317,16 @@
 			});
 		},
 
-		refresh: function(duration, index) {
+		refresh: function(duration, index) {	
 			var that = this,
-				previous = null,
+				previous = that.currentIndex,
 				covers = that._getCovers(),
-				covercount = covers.length;
+				covercount = covers.length,
+				triggered = false;
 		
 			covers.css('position', 'absolute');
-					
 			that.element.stop().animate({
-				'__coverflow_frame':	index  || that.options.index
+				'__coverflow_frame':	index || that.options.index
 			}, {
 				'easing':	that.options.easing,
 				'duration': duration || 0,
@@ -334,13 +336,17 @@
 					that.currentIndex = Math.max(0, Math.min(Math.round(now), covercount - 1));
 					if (previous !== that.currentIndex) {
 						previous = that.currentIndex;
-						that._callback('change');						
-						that._callback('select');
-					}					
+						that._callback('change');
+						if (that.currentIndex === that.options.index) {
+							triggered = true;
+						}
+					}
 				},
-				'complete':		function() {
-					that.currentIndex	= that.options.index;					
-					that._callback('change');
+				'complete':		function() {				
+					that.currentIndex	= that.options.index;
+					if (!triggered) {
+						that._callback('change');
+					}
 					that._callback('select');
 				}
 			});
