@@ -18,12 +18,13 @@ Features
 *	Separate CSS styles for the selected, innermost and outermost styles, all smoothly transitioning.
 *	Support for your own transitioning code, should you want to use weird CSS tricks such as CSS3 filters.
 *	Builtin mousewheel support.
-*	Optional support for complex CSS transitions.
-	Simply add my own interpolate plugin, included with Coverflow.
+*	Optional support for complex CSS transitions using interpolate plugin.
+	Included with Coverflow.
+	Available separately from https://github.com/vanderlee/interpolate.
 *	Optional support for reflections (need to enable manually).
-	Simply add Christophe Beyls' Reflections.js plugin, available from http://www.digitalia.be/software/reflectionjs-for-jquery and included with Coverflow.
+	Use Christophe Beyls' Reflections.js plugin, available from http://www.digitalia.be/software/reflectionjs-for-jquery and included with Coverflow.
 *	Optional support for touch swipe gestures.
-	Simply add Matt Bryson's TouchSwipe plugin, available from https://github.com/mattbryson/TouchSwipe-Jquery-Plugin and included with Coverflow.
+	Use Matt Bryson's TouchSwipe plugin, available from https://github.com/mattbryson/TouchSwipe-Jquery-Plugin and included with Coverflow.
 
 p.s. All the plugins optionally supported are MIT licensed, so as safe to use as the Coverflow plugin itself.
 
