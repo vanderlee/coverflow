@@ -117,6 +117,18 @@
 				$('#goto6').click(function() {
 					$('.coverflow').coverflow('index', 6-1);	// zero-based index!
 				});
+				
+				$('#keyboard').click(function() {
+					$('.coverflow').coverflow('option', 'enableKeyboard', $(this).is(':checked'));
+				});
+				
+				$('#wheel').click(function() {
+					$('.coverflow').coverflow('option', 'enableWheel', $(this).is(':checked'));
+				});
+				
+				$('#click').click(function() {
+					$('.coverflow').coverflow('option', 'enableClick', $(this).is(':checked'));
+				});
 
 				/* CD covers */
 
@@ -161,9 +173,14 @@
 		<h2>Examples</h2>
 
 		<h3>Alphabet selector</h3>
-		<button id="first">first</button>
-		<button id="goto6">6</button>
-		<button id="last">last</button>
+		<div style="position:absolute;background:rgba(255,255,255,.75);z-index:1000;padding:10px">
+			<button id="first">first</button>
+			<button id="goto6">Go to #6</button>
+			<button id="last">last</button>
+			<br/><label for="keyboard"><input type="checkbox" id="keyboard" checked/>Keyboard</label>
+			<br/><label for="click"><input type="checkbox" id="click" checked/>Click/tap</label>
+			<br/><label for="wheel"><input type="checkbox" id="wheel" checked/>Scroll wheel</label>
+		</div>
 		<div class="coverflow">
 			<div class="cover">A</div>
 			<div class="cover">B</div>

@@ -33,7 +33,7 @@
 						} else if ('wheelDelta' in event.originalEvent) { 
 							return event.originalEvent.wheelDelta;	// IE
 						}
-					};;
+					};
 
 	$.widget("vanderlee.coverflow", {
 		options: {
@@ -42,6 +42,9 @@
 			density:			1,
 			duration:			'normal',
 			easing:				undefined,
+			enableKeyboard:		true,
+			enableClick:		true,
+			enableWheel:		true,
 			index:				0,
 			innerAngle:			-75,
 			innerCss:			undefined,
@@ -93,20 +96,24 @@
 
 			// Enable click-jump
 			that.element.on('mousedown tap', '> *', function(event) {
-				var index = that._getCovers().index(this);
-				if (index === that.currentIndex) {
-					that._callback('confirm', event);
-				} else {
-					that._setIndex(index, true);
+				if (that.options.enableClick) {
+					var index = that._getCovers().index(this);
+					if (index === that.currentIndex) {
+						that._callback('confirm', event);
+					} else {
+						that._setIndex(index, true);
+					}
 				}
 			});
 
 			// Mousewheel
 			that.element.on(wheelEvents, function(event) {
-				var delta = getWheel(event) > 0 ? 1 : -1;
-				
-				event.preventDefault();
-				that._setIndex(that.options.index - delta, true);
+				if (that.options.enableWheel) {
+					var delta = getWheel(event) > 0 ? 1 : -1;
+
+					event.preventDefault();
+					that._setIndex(that.options.index - delta, true);
+				}
 			});
 
 			// Swipe
@@ -129,9 +136,10 @@
 			that._window_handler_resize = function() {
 				that.refresh();
 			};
+			$(window).on('resize', that._window_handler_resize);
 			
 			that._window_handler_keydown = function(event) {						
-				if (that.hovering) {
+				if (that.options.enableKeyboard && that.hovering) {
 					switch (event.which) {
 						case 36:	// home
 							event.preventDefault();
@@ -167,8 +175,6 @@
 					}
 				}
 			};
-
-			$(window).on('resize', that._window_handler_resize);
 			$(window).on('keydown', that._window_handler_keydown);
 
 			// Initialize

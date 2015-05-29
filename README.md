@@ -1,6 +1,6 @@
 jQuery Coverflow
 ================
-Version 1.1.10
+Version 1.2.0
 
 Copyright &copy; 2013-2015 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
@@ -87,6 +87,18 @@ The speed of animation. Use one of the standard constants "slow", "normal",
 ### **easing** (string, default: `undefined`)
 Define an easing method for scrolling. If none is specified, "swing" easing
 is used by default.
+
+### **enableKeyboard** (boolean, default: `true`)
+Set to false to disable keyboard interaction. Can be enabled/disabled using the
+`option` and `options` method.
+
+### **enableClick** (boolean, default: `true`)
+Set to false to disable mouse button (and touch tap) interaction. Can be
+enabled/disabled using the `option` and `options` method.
+
+### **enableWheel** (boolean, default: `true`)
+Set to false to disable mouse wheel interaction. Can be enabled/disabled using 
+the `option` and `options` method.
 
 ### **index** (string, integer: `0`)
 The initial selected index.
