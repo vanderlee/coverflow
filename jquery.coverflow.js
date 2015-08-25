@@ -119,8 +119,9 @@
 			// Swipe
 			if ($.isFunction(that.element.swipe)) {
 				that.element.swipe({
+					allowPageScroll: "vertical",
 					swipe: function(event, direction, distance, duration, fingerCount) {
-						var count = Math.round((direction === 'left' ? 1 : -1) * 1.25 * that.pagesize * distance / that.element.width());
+						var count = Math.round((direction==="left"? 1 : (direction==="right"? -1 : 0 )) * 1.25 * that.pagesize * distance / that.element.width());
 						that._setIndex(that.options.index + count, true);
 					}
 				});
