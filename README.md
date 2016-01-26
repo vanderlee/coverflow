@@ -41,6 +41,13 @@ Current version: https://github.com/vanderlee/coverflow/archive/master.zip
 
 Sourcecode on Github: https://github.com/vanderlee/coverflow
 
+
+jQueryUI custom build
+---------------------
+If you download a custom build of jQueryUI, you need these components:
+
+*	Widget
+
 Quick start
 -----------
 Here's a short code fragment, demonstrating how to use coverflow at it's most
