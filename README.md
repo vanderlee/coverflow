@@ -200,3 +200,25 @@ be triggered after animation as well, so you don't need to use the
 `animateComplete` event for normal animation frames.
 
 Callback: `function(event, cover, offset, isVisible, isMiddle, sin, cos)`
+
+Extensions/dependencies
+=======================
+Coverflow is designed to take advantage of a number of separate Javascript
+libraries to supply additional features. The download comes with these files
+included. If you deploy your code, you may wish to use or exclude these files.
+
+Interpolate
+-----------
+https://github.com/vanderlee/interpolate
+
+Interpolate is a library for smoothly interpolating CSS by taking advantage of
+the builtin jQuery and jQueryUI features. jQuery/jQueryUI offer support to
+smoothly animate transitions between two states of a large number of CSS rules
+but does not provide an interface to get a single "frame". Interpolate provides
+that interface.
+
+If you want to use Coverflow's `innerCss` and `outerCss` features, including
+Interpolate will ensure the animations will be smooth.
+
+TouchSwipe
+----------
