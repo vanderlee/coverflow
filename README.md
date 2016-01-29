@@ -220,5 +220,19 @@ that interface.
 If you want to use Coverflow's `innerCss` and `outerCss` features, including
 Interpolate will ensure the animations will be smooth.
 
-TouchSwipe
-----------
+TouchSwipe-Jquery-Plugin
+------------------------
+https://github.com/mattbryson/TouchSwipe-Jquery-Plugin
+
+TouchSwipe provides support for touch device input, like swiping the coverflow
+sideways. If you include this plug-in (or any plugin providing a compatible
+`.swipe()` implementation), Coverflow will detect it and support swiping.
+
+Relection.js
+------------
+http://www.digitalia.be/software/reflectionjs-for-jquery/
+
+The Reflection.js jQuery plugin provides controlable image reflections
+underneath the images. Though Coverflow neither detects nor interacts with this
+script, Coverflow is designed to work smoothly with this plugin without any
+additional code.
