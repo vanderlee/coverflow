@@ -42,7 +42,7 @@
 			density:			1,
 			duration:			'normal',
 			easing:				undefined,
-			enableKeyboard:		true,
+			enableKeyboard:		'both',			// true, false, 'both', 'focus', 'hover', 'none'
 			enableClick:		true,
 			enableWheel:		true,
 			index:				0,
@@ -94,6 +94,14 @@
 			// Hide all covers and set position to absolute
 			covers.hide();
 
+			// Add tabindex and autofocus if needed.
+			if (this.element.not(':tabbable')) {
+				this.element.attr('tabIndex', -1);
+				if (this.element.attr('autofocus')) {
+					this.element.focus();
+				}
+			}
+
 			// Enable click-jump
 			that.element.on('mousedown tap', '> *', function(event) {
 				if (that.options.enableClick) {
@@ -128,19 +136,20 @@
 			}
 
 			// Keyboard
-			that.element.hover(
-				function() { that.hovering = true; }
-			,	function() { that.hovering = false; }
-			);
+//			that.element.hover(
+//				function() { that.hovering = true; }
+//			,	function() { that.hovering = false; }
+//			);
 
 			// Refresh on resize
 			that._window_handler_resize = function() {
 				that.refresh();
 			};
 			$(window).on('resize', that._window_handler_resize);
-			
-			that._window_handler_keydown = function(event) {						
-				if (that.options.enableKeyboard && that.hovering) {
+
+			that._window_handler_keydown = function(event) {
+				if (($.inArray(that.options.enableKeyboard, [true, 'both', 'focus']) >= 0 && that.element.is(':focus'))
+				 || ($.inArray(that.options.enableKeyboard, [true, 'both', 'hover']) >= 0 >= 0 && that.element.is(':hover'))) {
 					switch (event.which) {
 						case 36:	// home
 							event.preventDefault();

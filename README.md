@@ -1,16 +1,16 @@
 jQuery Coverflow
 ================
-Version 1.2.0
+Version 1.3.0
 
-Copyright &copy; 2013-2015 Martijn van der Lee (http://martijn.vanderlee.com).
+Copyright &copy; 2013-2016 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
 
 Yet another jQuery Coverflow widget.
 
 Features
 --------
-*	Separate CSS
 *	Keyboard interaction using the cursor keys, Home, End, Page Up and Page Down.
+*	Focusable
 *	Click on a picture to move it to focus.
 *	Uses CSS3 transformations if supported by browser, otherwise gracefully degrades.
 *	Events for changing the focus, selecting and confirming (clicking on the picture in focus).
@@ -25,6 +25,7 @@ Features
 	Use Christophe Beyls' Reflections.js plugin, available from http://www.digitalia.be/software/reflectionjs-for-jquery and included with Coverflow.
 *	Optional support for touch swipe gestures.
 	Use Matt Bryson's TouchSwipe plugin, available from https://github.com/mattbryson/TouchSwipe-Jquery-Plugin and included with Coverflow.
+*	Extensive support for CSS styling of the states
 
 p.s. All the plugins optionally supported are MIT licensed, so as safe to use as the Coverflow plugin itself.
 
@@ -82,6 +83,14 @@ selected cover on either side. Outer covers are the ones at the very edges of
 the visible field. There may be covers beyond the outer covers, but they will
 not be visible.
 
+### Focus
+Coverflow is focussable. If you do not specify an explicit `tabIndex` attribute
+for the Coverflow element, one will be assigned with value `-1`, meaning it
+can be focussed using the mouse, but not by pressing the [tab] key.
+
+You can optionally set the `autofocus` attribute on the element, and Coverflow
+will detect it and focus itself on page load.
+
 Options
 -------
 ### **density** (function, default: `1`)
@@ -95,9 +104,15 @@ The speed of animation. Use one of the standard constants "slow", "normal",
 Define an easing method for scrolling. If none is specified, "swing" easing
 is used by default.
 
-### **enableKeyboard** (boolean, default: `true`)
-Set to false to disable keyboard interaction. Can be enabled/disabled using the
-`option` and `options` method.
+### **enableKeyboard** (boolean, default: `"both"`)
+By default, Coverflow catches keyboard events both when hovering over it or
+when it has focus.
+Available options are `"focus"`, `"hover"`, `"both"` and `"focus"`. You can also
+use boolean `true` or `false` to completely enable or disable keyboard.
+Can be enabled/disabled using the `option` and `options` method.
+
+If you use multiple coverflow components, you should use either `"focus"` or
+`"hover"`, otherwise the keyboard will affect multiple Coverflows at once.
 
 ### **enableClick** (boolean, default: `true`)
 Set to false to disable mouse button (and touch tap) interaction. Can be
