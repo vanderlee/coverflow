@@ -4,7 +4,7 @@
 /*!
  * Coverflow
  *
- * Copyright (c) 2013-2015 Martijn W. van der Lee
+ * Copyright (c) 2013-2016 Martijn W. van der Lee
  * Licensed under the MIT.
  */
 
@@ -71,7 +71,9 @@
 				images = covers.filter('img').add('img', covers).filter(function() {
 					return !(this.complete || this.height > 0);
 				}),
-				maxHeight = covers.height(),
+				maxHeight = Math.max.apply(null, covers.map(function(){
+					return $(this).height();
+				}).get()),
 				height;
 
 			// Internal event prefix
