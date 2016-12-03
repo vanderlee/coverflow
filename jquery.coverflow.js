@@ -85,7 +85,7 @@
 			
 			// Fix height
 			that.element.height(maxHeight);
-			images.load(function() {
+			images.on(function() {
 				height = that._getCovers().height();
 				if (height > maxHeight) {
 					maxHeight = height;
