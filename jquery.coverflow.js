@@ -269,12 +269,12 @@
 		
 		_frame: function(frame) {
 			frame = frame.toFixed(6);		
-				
+							
 			var that		= this,
 				covers		= that._getCovers(),
 				count		= covers.length,
-				parentWidth	= that.element.innerWidth(),
-				coverWidth	= that.options.width || covers.first().outerWidth(),
+				parentWidth	= that.element.innerWidth(),			
+				coverWidth	= that.options.width || covers.eq(this.options.index).show().get(0).offsetWidth,
 				visible		= that.options.visible === 'density'	? Math.round(parentWidth * that.options.density / coverWidth)
 							: $.isNumeric(that.options.visible)		? that.options.visible
 							: count,
