@@ -38,6 +38,7 @@
 	$.widget("vanderlee.coverflow", {
 		options: {
 			animateComplete:	undefined,
+			animateStart:		undefined,
 			animateStep:		undefined,
 			density:			1,
 			duration:			'normal',
@@ -325,12 +326,10 @@
 					'transform':			transform
 				}));
 				
-				// Optional callback
 				that._trigger('animateStep', null, [cover, offset, isVisible, isMiddle, sin, cos]);
 				
 				if (frame == that.options.index) {
-					// Optional callback
-					that._trigger('animateComplete', null, [cover, offset, isVisible, isMiddle, sin, cos]);					
+					that._trigger('animateComplete', null, [cover, offset, isVisible, isMiddle, sin, cos]);
 				}
 			});
 		},
@@ -341,6 +340,8 @@
 				covers = that._getCovers(),
 				covercount = covers.length,
 				triggered = false;
+		
+			that._callback('before');
 		
 			covers.css('position', 'absolute');
 			that.element.stop().animate({
@@ -362,6 +363,8 @@
 				},
 				'complete':		function() {				
 					that.currentIndex	= that.options.index;
+					that._callback('after');
+					
 					if (!triggered) {
 						that._callback('change');
 					}

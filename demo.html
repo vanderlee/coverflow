@@ -138,7 +138,7 @@
 
 				$('.photos').coverflow({
 					easing:			'easeOutElastic',
-					duration:		'slow',
+					duration:		1000,
 					index:			3,
 					width:			320,
 					height:			240,
@@ -150,11 +150,14 @@
 						console.log('Confirm');
 					},
 
-					change:			function(event, cover) {
+					before:			function() {
+						$('#photos-name').stop(true).fadeOut('fast');
+					},
+
+					select:			function(event, cover) {
 						var img = $(cover).children().andSelf().filter('img').last();
-						$('#photos-name').text(img.data('name') || 'unknown');
-					}
-					
+						$('#photos-name').text(img.data('name') || 'unknown').stop(true).fadeIn('fast');
+					},
 				});	
 
 				$('#leakdetect').click(function() {

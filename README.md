@@ -1,8 +1,8 @@
 jQuery Coverflow
 ================
-Version 1.3.3
+Version 1.3.4
 
-Copyright &copy; 2013-2016 Martijn van der Lee (http://martijn.vanderlee.com).
+Copyright &copy; 2013-2017 Martijn van der Lee (http://martijn.vanderlee.com).
 MIT Open Source license applies.
 
 Yet another jQuery Coverflow widget.
@@ -180,6 +180,11 @@ or removing covers or changing the covers yourself.
 
 Events
 ------
+### **before**
+Triggered just before moving the coverflow to a new index.
+
+Callback: `function(event, cover, index)`
+
 ### **change**
 Triggered whenever the current cover index changes. This includes initially and
 for each cover passed by when skipping past multiple covers. Change triggers as
