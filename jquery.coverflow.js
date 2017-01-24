@@ -106,7 +106,7 @@
 			}
 
 			// Enable click-jump
-			that.element.on('mousedown tap', '> *', function(event) {
+			that.element.on('mousedown tap click', '> *', function(event) {
 				if (that.options.enableClick) {
 					var index = that._getCovers().index(this);
 					if (index === that.currentIndex) {
