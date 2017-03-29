@@ -16,8 +16,15 @@
  * Requires jQuery 1.7+ and jQueryUI 1.9+.
  * Recommended jQuery 1.8+ and jQueryUI 1.9+.
  */
-
-;(function($, undefined) {
+;(function (root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		module.exports = factory(require('jquery'));
+	} else {
+		factory(root.jQuery);
+	}
+} (this, function($, undefined) {
 	"use strict";
 
 	var sign		= function(number) {
@@ -373,4 +380,4 @@
 			});
 		}
 	});
-}(jQuery));
+}));
