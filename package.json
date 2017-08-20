@@ -1,0 +1,28 @@
+{
+  "name": "jquery.coverflow",
+  "version": "1.0.0",
+  "description": "\"A jQuery-based Coverflow components with optional mousewheel, CSS3 interpolation, transformations, touch swipe, reflections and more.\",",
+  "main": "jquery.coverflow.js",
+  "dependencies": {
+    "jquery": ">=1.7.0",
+    "jquery-ui": ">=1.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikas-wadhwa/coverflow.git"
+  },
+  "keywords": [
+    "[\"jquery\"",
+    "\"coverflow\"]"
+  ],
+  "author": "[\"Martijn van der Lee <martijn@vanderlee.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vikas-wadhwa/coverflow/issues"
+  },
+  "homepage": "https://github.com/vikas-wadhwa/coverflow#readme"
+}
