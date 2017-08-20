@@ -1,5 +1,5 @@
 {
-  "name": "jquery-coverflow",
+  "name": "jquery.coverflow",
   "version": "1.0.0",
   "description": "\"A jQuery-based Coverflow components with optional mousewheel, CSS3 interpolation, transformations, touch swipe, reflections and more.\",",
   "main": "jquery.coverflow.js",
