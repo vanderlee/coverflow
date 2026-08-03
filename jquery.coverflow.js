@@ -321,7 +321,10 @@
 				
 				//@todo Test CSS for middle behaviour (or does $.interpolate handle it?)
 
-				transform = 'scale(' + scale + ',' + scale + ') perspective(' + (parentWidth * 0.5) + 'px) rotateY(' + angle + 'deg)';
+				// Transform functions are applied from right to left. Scale the cover
+				// before rotating it so perspective is calculated from its displayed
+				// size instead of its full dimensions (which can balloon in Firefox).
+				transform = 'perspective(' + (parentWidth * 0.5) + 'px) rotateY(' + angle + 'deg) scale(' + scale + ',' + scale + ')';
 				
 				$cover[isMiddle ? 'addClass' : 'removeClass']('current');
 				$cover[isVisible ? 'show' : 'hide']();				
