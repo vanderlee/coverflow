@@ -31,6 +31,7 @@ p.s. All the plugins optionally supported are MIT licensed, so as safe to use as
 
 Download & Install
 ------------------
+Install with npm using `npm install jquery.coverflow`.
 Install with bower using `bower install jquery.coverflow`.
 Install with yarn using `yarn add jquery.coverflow`.
 
