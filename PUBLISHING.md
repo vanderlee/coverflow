@@ -16,3 +16,5 @@ Releases are published as [`jquery.coverflow`](https://www.npmjs.com/package/jqu
 3. Publish the GitHub release. Prereleases are intentionally skipped.
 
 The workflow verifies the tag, tests the package, and publishes it with npm provenance. A version can only be published once.
+
+If GitHub does not start the workflow for an existing release, run the `Publish to npm` workflow manually from the Actions tab and enter the package version. The same version check and publishing steps apply.
