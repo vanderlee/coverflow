@@ -180,6 +180,22 @@ returned. Otherwise, the index will be set to the provided value.
 Redraw the covers. You shouldn't ever need to do this unless you are adding
 or removing covers or changing the covers yourself.
 
+When adding covers dynamically, append the new DOM node instead of rewriting
+the coverflow's `innerHTML`. Rewriting `innerHTML` recreates every existing
+node, which clears canvas-based reflections and discards plugin state. Apply
+the reflection plugin to the new cover before refreshing:
+
+```js
+var $cover = $('<img class="cover" src="demo/attic.jpg" alt="">')
+    .appendTo('#preview-coverflow');
+
+if ($.fn.reflect) {
+    $cover.reflect();
+}
+
+$('#preview-coverflow').coverflow('refresh');
+```
+
 Events
 ------
 ### **before**
