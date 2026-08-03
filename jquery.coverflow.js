@@ -227,6 +227,14 @@
 			var that = this,
 				covers = that._getCovers();
 
+			if (!covers.length) {
+				that.options.index = 0;
+				that.currentIndex = 0;
+				return;
+			}
+
+			that.options.index = Math.max(0, Math.min(that.options.index, covers.length - 1));
+			that.currentIndex = Math.max(0, Math.min(that.currentIndex, covers.length - 1));
 			index = Math.max(0, Math.min(index, covers.length - 1));
 
 			if (index !== that.options.index) {
