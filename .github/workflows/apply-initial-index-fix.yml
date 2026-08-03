@@ -1,0 +1,58 @@
+name: Apply initial index normalization fix
+
+on:
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/clamp-initial-index
+          fetch-depth: 0
+
+      - name: Normalize indexes before measuring covers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('jquery.coverflow.js')
+          data = path.read_bytes()
+          source = data.decode('utf-8')
+          newline = '\r\n' if '\r\n' in source else '\n'
+          prefix = (
+              '\t\t_setIndex: function(index, animate, initial) {' + newline
+              + '\t\t\tvar that = this,' + newline
+              + '\t\t\t\tcovers = that._getCovers();' + newline + newline
+          )
+          old = prefix + '\t\t\tindex = Math.max(0, Math.min(index, covers.length - 1));'
+          new = prefix + (
+              '\t\t\tif (!covers.length) {' + newline
+              + '\t\t\t\tthat.options.index = 0;' + newline
+              + '\t\t\t\tthat.currentIndex = 0;' + newline
+              + '\t\t\t\treturn;' + newline
+              + '\t\t\t}' + newline + newline
+              + '\t\t\tthat.options.index = Math.max(0, Math.min(that.options.index, covers.length - 1));' + newline
+              + '\t\t\tthat.currentIndex = Math.max(0, Math.min(that.currentIndex, covers.length - 1));' + newline
+              + '\t\t\tindex = Math.max(0, Math.min(index, covers.length - 1));'
+          )
+          if source.count(old) != 1:
+              raise SystemExit('Expected _setIndex prologue exactly once')
+          path.write_bytes(source.replace(old, new).encode('utf-8'))
+          Path('.github/workflows/apply-initial-index-fix.yml').unlink()
+          PY
+
+      - name: Commit patched source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add jquery.coverflow.js .github/workflows/apply-initial-index-fix.yml
+          git commit -m "Clamp initial coverflow indexes"
+          git push origin HEAD:agent/clamp-initial-index
